@@ -10,57 +10,164 @@ public class ActionController
 
 
     //Used mostly for 1 on 1 actions
+    //TODO: Refactor the if statment in these functions and put it into a single function
     public void PerformAction(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aAttacker, GenericCharacter aDefender)
     {
-        //Get attacker's action that they are using
-        //Call the action's "use ability/action" function to determine the effects etc.
-        //Get the data for that and apply the outcome to the attacker and defender
-        //Make a function to calculate/perform a turn for the data/effects, whatever happens
-
-        //GameManager.GetCombatManager-> ? This Function -> GetActionController()->IseAction
-        //Have instance of action controller here....?
-
         Debug.Log("Performing 1 on 1 action");
         Debug.Log("Action name from dictionary: " + ActionData.ABILITY_DICTIONARY[aActionID].GetActionName());
 
         GenericActionModel action = ActionData.ABILITY_DICTIONARY[aActionID];
 
-        //One function for
+        if (action.GetDoesActionDamage())
+        {
+            ApplyDamage(aDefender, aActionID);
+        }
 
-        //if does damage
-        // damage()
-        //if does healing
-        // heal()
-        //if does affix
-        // affix()
+        if (action.GetDoesActionHeal())
+        {
+            ApplyHeal(aAttacker, aActionID);
+        }
 
-        //Another function for
-
-        //if does damage
-        //loop through list
-        // damage() each one
-        //  etc..
-
+        if (action.GetDoesActionHaveAffix())
+        {
+            ApplyAffix(aDefender, aActionID);
+        }
     }
 
     public void PerformActionAll(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aAttacker)
     {
+        Debug.Log("Performing 1 on ALL action");
+        Debug.Log("Action name from dictionary: " + ActionData.ABILITY_DICTIONARY[aActionID].GetActionName());
+
+        int hitTracking = 0;
+
+        GenericActionModel action = ActionData.ABILITY_DICTIONARY[aActionID];
+
+        for (int i = 0; i < GameManager.GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            GenericCharacter genericCharacter = GameManager.GetPlayerManager.GetCharacterList()[i];
+
+            if (action.GetDoesActionDamage())
+            {
+                ApplyDamage(genericCharacter, aActionID);
+                hitTracking++;
+            }
+
+            if (action.GetDoesActionHeal())
+            {
+                ApplyHeal(genericCharacter, aActionID);
+                hitTracking++;
+            }
+
+            if (action.GetDoesActionHaveAffix())
+            {
+                ApplyAffix(genericCharacter, aActionID);
+                hitTracking++;
+            }
+        }
+
+        Debug.Log("Action hit " + hitTracking + " times");
 
     }
 
     public void PerformSelfAction(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aAttacker)
     {
+        Debug.Log("Performing self action");
+        Debug.Log("Action name from dictionary: " + ActionData.ABILITY_DICTIONARY[aActionID].GetActionName());
 
+        GenericActionModel action = ActionData.ABILITY_DICTIONARY[aActionID];
+
+        if (action.GetDoesActionDamage())
+        {
+            ApplyDamage(aAttacker, aActionID);
+        }
+
+        if (action.GetDoesActionHeal())
+        {
+            ApplyHeal(aAttacker, aActionID);
+        }
+
+        if (action.GetDoesActionHaveAffix())
+        {
+            ApplyAffix(aAttacker, aActionID);
+        }
     }
 
     public void PerformMultiOffensiveAction(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aAttacker)
     {
+        Debug.Log("Performing multi offensive action");
+        Debug.Log("Action name from dictionary: " + ActionData.ABILITY_DICTIONARY[aActionID].GetActionName());
+
+        int hitTracking = 0;
+
+        GenericActionModel action = ActionData.ABILITY_DICTIONARY[aActionID];
+
+        for (int i = 0; i < GameManager.GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            GenericCharacter genericCharacter = GameManager.GetPlayerManager.GetCharacterList()[i];
+
+            if (genericCharacter.IsPlayerControlled() == false)
+            {
+                if (action.GetDoesActionDamage())
+                {
+                    ApplyDamage(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+
+                if (action.GetDoesActionHeal())
+                {
+                    ApplyHeal(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+
+                if (action.GetDoesActionHaveAffix())
+                {
+                    ApplyAffix(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+            }
+        }
+
+        Debug.Log("Action hit " + hitTracking + " times");
 
     }
 
     public void PerformMultiDefensiveAction(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aDefender)
     {
+        Debug.Log("Performing multi defensive action");
+        Debug.Log("Action name from dictionary: " + ActionData.ABILITY_DICTIONARY[aActionID].GetActionName());
 
+        int hitTracking = 0;
+
+        GenericActionModel action = ActionData.ABILITY_DICTIONARY[aActionID];
+
+        for (int i = 0; i < GameManager.GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            GenericCharacter genericCharacter = GameManager.GetPlayerManager.GetCharacterList()[i];
+
+            if (genericCharacter.IsPlayerControlled() == true)
+            {
+                if (action.GetDoesActionDamage())
+                {
+                    ApplyDamage(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+
+                if (action.GetDoesActionHeal())
+                {
+                    ApplyHeal(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+
+                if (action.GetDoesActionHaveAffix())
+                {
+                    ApplyAffix(genericCharacter, aActionID);
+                    hitTracking++;
+                }
+            }
+        }
+
+        Debug.Log("Action hit " + hitTracking + " times");
     }
 
 
@@ -103,6 +210,7 @@ public class ActionController
     }
 */
 
+    //These will be redefined and/or changed later to encorperate the other stats from the player/action user
     private void ApplyDamage(GenericCharacter aDamagerReceiver, ActionData.ACTION_LIST_ID aActionID)
     {
         Debug.Log("Action ID: " + aActionID + " is being used against Target: " + aDamagerReceiver.GetCharacterName());

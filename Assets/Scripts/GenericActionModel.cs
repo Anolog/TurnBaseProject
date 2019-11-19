@@ -82,9 +82,28 @@ public class GenericActionModel
         return m_ActionType;
     }
 
-    //Probably don't need this...? Maybe keep but change to use the new variable
-    /*
-    public bool GetIfActionHasAffix()
+    public ACTION_TARGET_AMOUNT GetActionTargetAmount()
+    {
+        return m_TargetAmount;
+    }
+
+    public bool GetDoesActionDamage()
+    {
+        return m_bActionDealsDamage;
+    }
+
+    public bool GetDoesActionHeal()
+    {
+        return m_bActionHeals;
+    }
+
+    public bool GetDoesActionHaveAffix()
+    {
+        return m_bActionHasAffix;
+    }
+
+    //Used for lazy/non manual checking
+    private bool GetIfActionHasAffix()
     {
         bool bHasAffix = false;
 
@@ -97,6 +116,4 @@ public class GenericActionModel
 
         return bHasAffix;
     }
-    */
-
 }

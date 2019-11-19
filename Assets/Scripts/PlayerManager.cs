@@ -22,6 +22,11 @@ public class PlayerManager : MonoBehaviour
 		
 	}
 
+    public List<GenericCharacter> GetCharacterList()
+    {
+        return m_ListOfCharacters;
+    }
+
     public void AddCharacterToList(GenericCharacter aCharacter)
     {
         m_ListOfCharacters.Add(aCharacter);
@@ -68,4 +73,5 @@ public class PlayerManager : MonoBehaviour
 
         CharacterDoesNotExistDebugLog(bDoesCharacterExist);
     }
+
 }
