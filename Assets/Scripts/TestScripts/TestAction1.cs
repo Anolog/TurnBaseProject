@@ -15,4 +15,26 @@ public class TestAction1 : GenericActionModel
         m_TargetAmount = ACTION_TARGET_AMOUNT.SINGLE_TARGET;
     }
 
+    public void SetInitPropertiesSelfTarget()
+    {
+        m_ActionType = ACTION_TYPE.OFFENSIVE;
+
+        m_DamageAmount = 60;
+        m_Name = "Test Action, Self Target";
+
+        m_bActionDealsDamage = true;
+        m_TargetAmount = ACTION_TARGET_AMOUNT.SINGLE_TARGET;
+    }
+
+    public void SetInitPropertiesSelfTargetDefensive()
+    {
+        m_ActionType = ACTION_TYPE.DEFENSIVE;
+
+        m_ShieldAmount = 40;
+        m_Name = "Test Action, Self Target Defensive";
+
+        m_bActionDealsDamage = true;
+        m_TargetAmount = ACTION_TARGET_AMOUNT.SINGLE_TARGET;
+    }
+
 }

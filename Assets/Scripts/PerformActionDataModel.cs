@@ -27,6 +27,16 @@ public class PerformActionDataModel
         m_DefenderData = aDefender;
     }
 
+    public PerformActionDataModel(ActionData.ACTION_LIST_ID aActionID,
+                              GenericActionModel.ACTION_TARGET_AMOUNT aTargetAmount,
+                              GenericCharacter aAttacker)
+    {
+        m_ActionID = aActionID;
+        m_ActionTargetAmount = aTargetAmount;
+        m_AttackerData = aAttacker;
+        m_DefenderData = aAttacker;
+    }
+
     public ActionData.ACTION_LIST_ID GetActionID()
     {
         return m_ActionID;

@@ -11,6 +11,7 @@ public class ActionController
 
     //Used mostly for 1 on 1 actions
     //TODO: Refactor the if statment in these functions and put it into a single function
+    //TODO: Change this to use the perform action model for parameters
     public void PerformAction(ActionData.ACTION_LIST_ID aActionID, GenericCharacter aAttacker, GenericCharacter aDefender)
     {
         Debug.Log("Performing 1 on 1 action");
