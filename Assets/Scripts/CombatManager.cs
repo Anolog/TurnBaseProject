@@ -59,30 +59,7 @@ public class CombatManager : MonoBehaviour
 
     public void ProcessAction(PerformActionDataModel aPerformActionDataModel)
     {
-        Debug.Log("Processing Action");
-
-        switch(aPerformActionDataModel.GetTargetAmount())
-        {
-            case GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET:
-                m_ActionController.PerformAction(aPerformActionDataModel.GetActionID(), aPerformActionDataModel.GetAttackerData(), aPerformActionDataModel.GetDefenderData());
-                break;
-
-            case GenericActionModel.ACTION_TARGET_AMOUNT.ALL_TARGETS:
-                m_ActionController.PerformActionAll(aPerformActionDataModel.GetActionID(), aPerformActionDataModel.GetAttackerData());
-                break;
-
-            case GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_OFFENSIVE:
-                m_ActionController.PerformMultiOffensiveAction(aPerformActionDataModel.GetActionID(), aPerformActionDataModel.GetAttackerData());
-                break;
-
-            case GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_DEFENSIVE:
-                m_ActionController.PerformMultiDefensiveAction(aPerformActionDataModel.GetActionID(), aPerformActionDataModel.GetAttackerData());
-                break;
-
-            default:
-                Debug.Log("Error: Action does not have a target amount type, or is set to none.");
-                break;
-        }
+        m_ActionController.PerformAction(aPerformActionDataModel);
     }
 
     public void ResetInitialActionUser()
