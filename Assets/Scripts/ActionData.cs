@@ -28,4 +28,14 @@ public class ActionData
     //Why was this a List<Dictionary>> before? :thonking:
     public static Dictionary<ACTION_LIST_ID, GenericActionModel> ABILITY_DICTIONARY = new Dictionary<ACTION_LIST_ID, GenericActionModel>();
 
+    public enum AFFIX_LIST_ID
+    {
+        NONE,
+        EXHAUST,
+        DOUBLE_ATTACK
+
+    }
+
+    //Master list of all affixes
+    public static Dictionary<AFFIX_LIST_ID, GenericAffixModel> AFFIX_DICTIONARY = new Dictionary<AFFIX_LIST_ID, GenericAffixModel>();
 }

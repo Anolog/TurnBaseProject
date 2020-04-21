@@ -2,18 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericActionModel
+public class GenericActionModel : Action
 {
-    protected string m_Name = "Generic";
-
-    public enum SPELL_AFFIX
-    {
-        NONE,
-        EXHAUST,
-        DOUBLE_ATTACK
-
-    }
-
     public enum ACTION_TYPE
     {
         OFFENSIVE,
@@ -32,50 +22,17 @@ public class GenericActionModel
         NO_TARGETS
     }
 
-    protected SPELL_AFFIX m_SpellAffix  = SPELL_AFFIX.NONE;
-    protected SPELL_AFFIX m_SpellAffix2 = SPELL_AFFIX.NONE;
-    protected SPELL_AFFIX m_SpellAffix3 = SPELL_AFFIX.NONE;
+    protected ActionData.AFFIX_LIST_ID m_SpellAffix1 = ActionData.AFFIX_LIST_ID.NONE;
+    protected ActionData.AFFIX_LIST_ID m_SpellAffix2 = ActionData.AFFIX_LIST_ID.NONE;
+    protected ActionData.AFFIX_LIST_ID m_SpellAffix3 = ActionData.AFFIX_LIST_ID.NONE;
 
     protected ACTION_TYPE m_ActionType  = ACTION_TYPE.NULL;
 
     protected ACTION_TARGET_AMOUNT m_TargetAmount = ACTION_TARGET_AMOUNT.NO_TARGETS;
 
-    protected int m_DamageAmount      = 0;
-    protected int m_ShieldAmount      = 0;
-    protected int m_HealAmount        = 0;
-    protected int m_StrengthAmount    = 0;
-    protected int m_ManaGainAmount    = 0;
     protected int m_ManaCostAmount    = 0;
     protected int m_ActionCostAmount  = 0;
-    protected int m_ActionGainAmount  = 0;
-    protected int m_StatusOneAmount   = 0;
-    protected int m_StatusTwoAmount   = 0;
-    protected int m_StatusThreeAmount = 0;
 
-    protected bool m_bActionDealsDamage = false;
-    protected bool m_bActionHeals       = false;
-    protected bool m_bActionHasAffix    = false;
-
-
-    public string GetActionName()
-    {
-        return m_Name;
-    }
-
-    public int GetDamageAmount()
-    {
-        return m_DamageAmount;
-    }
-
-    public int GetShieldAmount()
-    {
-        return m_ShieldAmount;
-    }
-
-    public int GetHealAmount()
-    {
-        return m_HealAmount;
-    }
 
     public ACTION_TYPE GetActionType()
     {
@@ -87,33 +44,41 @@ public class GenericActionModel
         return m_TargetAmount;
     }
 
-    public bool GetDoesActionDamage()
-    {
-        return m_bActionDealsDamage;
-    }
-
-    public bool GetDoesActionHeal()
-    {
-        return m_bActionHeals;
-    }
-
-    public bool GetDoesActionHaveAffix()
-    {
-        return m_bActionHasAffix;
-    }
-
     //Used for lazy/non manual checking
     private bool GetIfActionHasAffix()
     {
         bool bHasAffix = false;
 
-        if (m_SpellAffix  != SPELL_AFFIX.NONE ||
-            m_SpellAffix2 != SPELL_AFFIX.NONE ||
-            m_SpellAffix3 != SPELL_AFFIX.NONE  )
+        if (m_SpellAffix1 != ActionData.AFFIX_LIST_ID.NONE ||
+            m_SpellAffix2 != ActionData.AFFIX_LIST_ID.NONE ||
+            m_SpellAffix3 != ActionData.AFFIX_LIST_ID.NONE)
         {
             bHasAffix = true;
         }
 
         return bHasAffix;
     }
+
+    public List<ActionData.AFFIX_LIST_ID> GetListOfAffixes()
+    {
+        List<ActionData.AFFIX_LIST_ID> listOfAffixes = new List<ActionData.AFFIX_LIST_ID>();
+
+        if (m_SpellAffix1 != ActionData.AFFIX_LIST_ID.NONE)
+        {
+            listOfAffixes.Add(m_SpellAffix1);
+        }
+
+        if (m_SpellAffix2 != ActionData.AFFIX_LIST_ID.NONE)
+        {
+            listOfAffixes.Add(m_SpellAffix2);
+        }
+
+        if (m_SpellAffix3 != ActionData.AFFIX_LIST_ID.NONE)
+        {
+            listOfAffixes.Add(m_SpellAffix3);
+        }
+
+        return listOfAffixes;
+    }
+
 }

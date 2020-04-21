@@ -31,6 +31,9 @@ public class GenericCharacter
     //Temp for now, change to dictionary or something later
     protected List<ActionData.ACTION_LIST_ID> m_ActionList = new List<ActionData.ACTION_LIST_ID>();
 
+    //List of affixes on the generic character
+    protected List<ActionData.AFFIX_LIST_ID> m_AffixList = new List<ActionData.AFFIX_LIST_ID>();
+
     public void ListUsableActions()
     {
         //Go through the list of actions that this user can use and do something with them
@@ -113,6 +116,7 @@ public class GenericCharacter
             {
                 Debug.Log("Action ID " + aActionID + " already exists for this character: " + m_CharacterName);
                 bExists = true;
+                break;
             }
         }
 
@@ -122,6 +126,56 @@ public class GenericCharacter
     public void ClearActionList()
     {
         m_ActionList.Clear();
+    }
+
+    //TODO: DELETE / MOVE THIS BECAUSE IT IS NOW BEING MOVED INTO THE COMBAT MANGER
+
+    public List<ActionData.AFFIX_LIST_ID> GetAffixListOnCharacter()
+    {
+        return m_AffixList;
+    }
+
+    public void AddAffixIDToAffixListOnCharacter(ActionData.AFFIX_LIST_ID aAffixID)
+    {
+        if (DoesAffixIDExistOnCharacter(aAffixID))
+        {
+            //TODO: Add a check for if exists, though it always should.
+            //Grab this from the character instead you retard... if possible....? 
+            GenericAffixModel affix = ActionData.AFFIX_DICTIONARY[aAffixID];
+
+            //If already exists
+            //Get if stackable, or not
+            if (affix.GetIsStackable() == true)
+            {
+                
+            }
+
+            //If stackable
+            //Change how the affix works somehow ?
+            //If not stackable, reset that affix (Or just remove/add it again)
+        }
+
+        else
+        {
+            //TODO: Potentially add a check for the size / limit of affixes allowed.... if deciding to put a limit
+            m_AffixList.Add(aAffixID);
+        }
+    }
+
+    public bool DoesAffixIDExistOnCharacter(ActionData.AFFIX_LIST_ID aAffixID)
+    {
+        bool bExists = false;
+
+        for (int i = 0; i < m_AffixList.Count; i++)
+        {
+            if (m_AffixList[i] == aAffixID)
+            {
+                Debug.Log("Action ID " + aAffixID + " is affecting this character: " + m_CharacterName);
+                bExists = true;
+            }
+        }
+
+        return bExists;
     }
 
     public void UseCurrentAction(ActionData.ACTION_LIST_ID aActionID)

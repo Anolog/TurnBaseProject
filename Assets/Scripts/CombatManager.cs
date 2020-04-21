@@ -7,11 +7,12 @@ public class CombatManager : MonoBehaviour
     //Change this list here to be from the player/character manager class instead
     public List<GenericCharacter> m_AllActionUsers;
     public List<GenericActionModel> m_AllAbilitiesList;
+    public List<GenericAffixModel> m_AllAffixList;
+
+    public Dictionary<GenericCharacter, List<GenericAffixModel>> m_ActionUsersWithAffixes;
 
     private ActionController m_ActionController;
-
-    //public GenericCharacter m_PlayerInfo;
-    //public List<GenericCharacter> m_EnemyInfo;
+    private ActionAffixController m_AffixController;
 
     //Whos turn is it?
     public GenericCharacter m_CurrentActionUser;
@@ -20,6 +21,14 @@ public class CombatManager : MonoBehaviour
 
     private bool m_bIsPlayersTurn = false;
     private ushort m_TurnQueueIndex = 0;
+
+    enum COMBAT_STATE
+    {
+        PLAYER_TURN,
+        ENEMY_TURN
+    }
+
+    private COMBAT_STATE m_CombatState = COMBAT_STATE.PLAYER_TURN;
 
 	private void Awake()
 	{
@@ -37,6 +46,16 @@ public class CombatManager : MonoBehaviour
         if (m_ActionController == null)
         {
             m_ActionController = new ActionController();
+        }
+
+        if (m_AffixController == null)
+        {
+            m_AffixController = new ActionAffixController();
+        }
+
+        if (m_ActionUsersWithAffixes == null)
+        {
+            m_ActionUsersWithAffixes = new Dictionary<GenericCharacter, List<GenericAffixModel>>();
         }
 	}
 
@@ -60,6 +79,72 @@ public class CombatManager : MonoBehaviour
     public void ProcessAction(PerformActionDataModel aPerformActionDataModel)
     {
         m_ActionController.PerformAction(aPerformActionDataModel);
+        
+    }
+
+    public void ProcessAffix()
+    {
+        //TODO: Create algorithm for processing affixes
+        //Who's turn is ending, etc... User side / Enemy side
+        //Get the side, look through that side's player list and do the affix
+        //Make another function for looking through to see who needs an affix done to them, then call this one after?
+        //Create the way to process affixes for the end of the turn
+
+        //if combat state is player turn and character we are checking is == to player controlled
+
+        foreach(var index in m_ActionUsersWithAffixes)
+        {
+            if (index.Key.IsPlayerControlled() && m_CombatState == COMBAT_STATE.ENEMY_TURN ||
+                !index.Key.IsPlayerControlled() && m_CombatState == COMBAT_STATE.PLAYER_TURN)
+            {
+                for (int i = 0; i < index.Value.Count; i++)
+                {
+                    //index.Value[i].
+                }
+            }
+        }
+    }
+
+    //TODO: Move this into action controller
+    public void AddAffixToCharacter(GenericAffixModel aAffix, GenericCharacter aCharacter)
+    {
+        if (m_ActionUsersWithAffixes.ContainsKey(aCharacter))
+        {
+            bool bDoesAffixExist = false;
+            int indexFound = 0;
+
+            for (int i = 0; i < m_ActionUsersWithAffixes[aCharacter].Count; i++)
+            {
+                if (m_ActionUsersWithAffixes[aCharacter][i].GetAffixID() == aAffix.GetAffixID())
+                {
+                    bDoesAffixExist = true;
+                    indexFound = i;
+                    break;
+                }
+            }
+
+            if (bDoesAffixExist == true)
+            {
+                if (aAffix.GetIsStackable())
+                {
+                    m_ActionUsersWithAffixes[aCharacter][indexFound].AddStackAmount(1);
+                }
+                else
+                {
+                    m_ActionUsersWithAffixes[aCharacter][indexFound].RefreshAffix();
+                }
+            }
+            else
+            {
+                m_ActionUsersWithAffixes[aCharacter].Add(aAffix);
+            }
+        }
+        else
+        {
+            List<GenericAffixModel> affixModelList = new List<GenericAffixModel>();
+            affixModelList.Add(aAffix);
+            m_ActionUsersWithAffixes.Add(aCharacter, affixModelList);
+        }
     }
 
     public void ResetInitialActionUser()

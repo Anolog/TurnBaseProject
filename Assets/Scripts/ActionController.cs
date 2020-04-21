@@ -47,6 +47,8 @@ public class ActionController
         }
     }
     
+    //TODO:
+    //Perform action for affix
     
     //Used mostly for 1 on 1 actions
     //TODO: Refactor the if statment in these functions and put it into a single function
@@ -68,7 +70,15 @@ public class ActionController
 
         if (aAction.GetDoesActionHaveAffix())
         {
-            ApplyAffix(aDefender, aAction);
+            List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+
+            if (affixList.Count != 0)
+            {
+                for (int i = 0; i < affixList.Count; i++)
+                {
+                    ApplyAffix(aDefender, ActionData.AFFIX_DICTIONARY[affixList[i]]);
+                }
+            }
         }
     }
 
@@ -97,13 +107,19 @@ public class ActionController
 
             if (aAction.GetDoesActionHaveAffix())
             {
-                ApplyAffix(genericCharacter, aAction);
-                hitTracking++;
+                List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+
+                if (affixList.Count != 0)
+                {
+                    for (int j = 0; j < affixList.Count; j++)
+                    {
+                        ApplyAffix(genericCharacter, ActionData.AFFIX_DICTIONARY[affixList[j]]);
+                    }
+                }
             }
         }
 
         Debug.Log("Action hit " + hitTracking + " times");
-
     }
 
     public void PerformSelfAction(GenericActionModel aAction, GenericCharacter aAttacker)
@@ -123,7 +139,15 @@ public class ActionController
 
         if (aAction.GetDoesActionHaveAffix())
         {
-            ApplyAffix(aAttacker, aAction);
+            List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+
+            if (affixList.Count != 0)
+            {
+                for (int j = 0; j < affixList.Count; j++)
+                {
+                    ApplyAffix(aAttacker, ActionData.AFFIX_DICTIONARY[affixList[j]]);
+                }
+            }
         }
     }
 
@@ -154,8 +178,15 @@ public class ActionController
 
                 if (aAction.GetDoesActionHaveAffix())
                 {
-                    ApplyAffix(genericCharacter, aAction);
-                    hitTracking++;
+                    List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+
+                    if (affixList.Count != 0)
+                    {
+                        for (int j = 0; j < affixList.Count; j++)
+                        {
+                            ApplyAffix(genericCharacter, ActionData.AFFIX_DICTIONARY[affixList[j]]);
+                        }
+                    }
                 }
             }
         }
@@ -191,54 +222,21 @@ public class ActionController
 
                 if (aAction.GetDoesActionHaveAffix())
                 {
-                    ApplyAffix(genericCharacter, aAction);
-                    hitTracking++;
+                    List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+
+                    if (affixList.Count != 0)
+                    {
+                        for (int j = 0; j < affixList.Count; j++)
+                        {
+                            ApplyAffix(genericCharacter, ActionData.AFFIX_DICTIONARY[affixList[j]]);
+                        }
+                    }
                 }
             }
         }
 
         Debug.Log("Action hit " + hitTracking + " times");
     }
-
-
-    /*
-    virtual protected void UseAbility()
-    {
-        Debug.Log("Generic Ability Use Called!");
-
-        if (m_bActionDealsDamage == true)
-        {
-            ActionDamage();
-        }
-
-        if (m_bActionHeals == true)
-        {
-            ActionHeal();
-        }
-
-        if (m_bActionHasAffix == true)
-        {
-            ActionAffix();
-        }
-    }
-*/
-
-    /*
-    virtual protected void ActionDamage(GenericCharacter aCharacter)
-    {
-        Debug.Log("Genetic Action Damage Called");
-    }
-
-    virtual protected void ActionHeal(GenericCharacter aCharacter)
-    {
-        Debug.Log("Generic Action Heal Called");
-    }
-
-    virtual protected void ActionAffix(GenericCharacter aCharacter)
-    {
-        Debug.Log("Generic Action Affix Called");
-    }
-*/
 
     //These will be redefined and/or changed later to encorperate the other stats from the player/action user
     private void ApplyDamage(GenericCharacter aDamagerReceiver, GenericActionModel aAction)
@@ -255,9 +253,9 @@ public class ActionController
         aHealReceiver.SetCharacterHealth(aHealReceiver.GetCharacterHealth() + aAction.GetHealAmount());
     }
 
-    private void ApplyAffix(GenericCharacter aAffixReceiver, GenericActionModel aAction)
+    private void ApplyAffix(GenericCharacter aAffixReceiver, GenericAffixModel aAffix)
     {
-        Debug.Log("Action: " + aAction.GetActionName() + "is being used on Target: " + aAffixReceiver.GetCharacterName());
+        Debug.Log("Action: " + aAffix.GetActionName() + "is being used on Target: " + aAffixReceiver.GetCharacterName());
 
     }
 
