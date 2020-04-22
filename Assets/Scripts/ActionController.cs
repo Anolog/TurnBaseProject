@@ -21,7 +21,14 @@ public class ActionController
             switch (aPerformActionDataModel.GetTargetAmount())
             {
                 case GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET:
-                    PerformActionSingle(action, actionUser, actionDefender);
+                    if (actionUser != actionDefender)
+                    {
+                        PerformActionSingle(action, actionUser, actionDefender);
+                    }
+                    else if (actionUser == actionDefender)
+                    {
+                        PerformSelfAction(action, actionUser);
+                    }
                     break;
 
                 case GenericActionModel.ACTION_TARGET_AMOUNT.ALL_TARGETS:
@@ -47,8 +54,18 @@ public class ActionController
         }
     }
     
-    //TODO:
-    //Perform action for affix
+    public void PerformAction(GenericAffixModel aAffix, GenericCharacter aCharacter)
+    {
+        Debug.Log("Performing Action - Affix Type");
+        Debug.Log("Affix " + aAffix.GetActionName() + " being used on " + aCharacter.GetCharacterName());
+
+        PerformSelfAction(aAffix, aCharacter);
+    }
+
+    public void AffixDepleated(GenericAffixModel aAffix)
+    {
+        //Delete the affix
+    }
     
     //Used mostly for 1 on 1 actions
     //TODO: Refactor the if statment in these functions and put it into a single function
@@ -122,7 +139,7 @@ public class ActionController
         Debug.Log("Action hit " + hitTracking + " times");
     }
 
-    public void PerformSelfAction(GenericActionModel aAction, GenericCharacter aAttacker)
+    public void PerformSelfAction(Action aAction, GenericCharacter aAttacker)
     {
         Debug.Log("Performing self action");
         Debug.Log("Action name from dictionary: " + aAction.GetActionName());
@@ -137,9 +154,9 @@ public class ActionController
             ApplyHeal(aAttacker, aAction);
         }
 
-        if (aAction.GetDoesActionHaveAffix())
+        if (aAction.GetDoesActionHaveAffix() && aAction.GetType() != typeof(GenericAffixModel))
         {
-            List<ActionData.AFFIX_LIST_ID> affixList = aAction.GetListOfAffixes();
+            List<ActionData.AFFIX_LIST_ID> affixList = ((GenericActionModel)aAction).GetListOfAffixes();
 
             if (affixList.Count != 0)
             {
@@ -239,14 +256,14 @@ public class ActionController
     }
 
     //These will be redefined and/or changed later to encorperate the other stats from the player/action user
-    private void ApplyDamage(GenericCharacter aDamagerReceiver, GenericActionModel aAction)
+    private void ApplyDamage(GenericCharacter aDamagerReceiver, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used against Target: " + aDamagerReceiver.GetCharacterName());
 
         aDamagerReceiver.SetCharacterHealth(aDamagerReceiver.GetCharacterHealth() - aAction.GetDamageAmount());
     }
 
-    private void ApplyHeal(GenericCharacter aHealReceiver, GenericActionModel aAction)
+    private void ApplyHeal(GenericCharacter aHealReceiver, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used on Target: " + aHealReceiver.GetCharacterName());
 
@@ -257,6 +274,45 @@ public class ActionController
     {
         Debug.Log("Action: " + aAffix.GetActionName() + "is being used on Target: " + aAffixReceiver.GetCharacterName());
 
+        Dictionary<GenericCharacter, List<GenericAffixModel>> actionUsersWithAffixes = GameManager.GetCombatManager.m_ActionUsersWithAffixes;
+
+        if (actionUsersWithAffixes.ContainsKey(aAffixReceiver))
+        {
+            bool bDoesAffixExist = false;
+            int indexFound = 0;
+
+            for (int i = 0; i < actionUsersWithAffixes[aAffixReceiver].Count; i++)
+            {
+                if (actionUsersWithAffixes[aAffixReceiver][i].GetAffixID() == aAffix.GetAffixID())
+                {
+                    bDoesAffixExist = true;
+                    indexFound = i;
+                    break;
+                }
+            }
+
+            if (bDoesAffixExist == true)
+            {
+                if (aAffix.GetIsStackable())
+                {
+                    actionUsersWithAffixes[aAffixReceiver][indexFound].AddStackAmount(1);
+                }
+                else
+                {
+                    actionUsersWithAffixes[aAffixReceiver][indexFound].RefreshAffix();
+                }
+            }
+            else
+            {
+                actionUsersWithAffixes[aAffixReceiver].Add(aAffix);
+            }
+        }
+        else
+        {
+            List<GenericAffixModel> affixModelList = new List<GenericAffixModel>();
+            affixModelList.Add(aAffix);
+            actionUsersWithAffixes.Add(aAffixReceiver, affixModelList);
+        }
     }
 
     //Change the apply functions, to take a value and apply that value as the heal, damage, etc...

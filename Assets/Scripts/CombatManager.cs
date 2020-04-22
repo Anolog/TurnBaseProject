@@ -99,13 +99,17 @@ public class CombatManager : MonoBehaviour
             {
                 for (int i = 0; i < index.Value.Count; i++)
                 {
-                    //index.Value[i].
+                    if (index.Value[i].GetAffixUses() > 0)
+                    {
+                        m_ActionController.PerformAction(index.Value[i], index.Key);
+                    }
                 }
             }
         }
     }
 
-    //TODO: Move this into action controller
+    //DEPRECATED. DO NOT USE
+    /*
     public void AddAffixToCharacter(GenericAffixModel aAffix, GenericCharacter aCharacter)
     {
         if (m_ActionUsersWithAffixes.ContainsKey(aCharacter))
@@ -146,6 +150,7 @@ public class CombatManager : MonoBehaviour
             m_ActionUsersWithAffixes.Add(aCharacter, affixModelList);
         }
     }
+    */
 
     public void ResetInitialActionUser()
     {
