@@ -41,15 +41,18 @@ public class GameManager : MonoBehaviour
         // *************************************** //
         // **********Debug/Test Code************** //
         // *************************************** //
-        Test_AddAllSkillsToList();
+        //Test_AddAllSkillsToList();
 	}
 
 	private void Start()
 	{
         //Test_CharacterInteraction1();
-        Test_ListAllAbilitiesInDictionary();
-        Test_ActionInteraction();
-	}
+        //Test_ListAllAbilitiesInDictionary();
+        //Test_ActionInteraction();
+
+        Test_AffixInteraction();
+
+    }
 
 	// Update is called once per frame
 	void Update () 
@@ -114,6 +117,59 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Action In Dictionary With The Name: " + actionDataIndex.Value.GetActionName());
         }
+    }
+
+    public void Test_ListAllAffixesInDictionary()
+    {
+        foreach (KeyValuePair<ActionData.AFFIX_LIST_ID, GenericAffixModel> affixDataIndex in ActionData.AFFIX_DICTIONARY)
+        {
+            Debug.Log("Affix in dictionary with the name: " + affixDataIndex.Value.GetActionName());
+        }
+    }
+
+    public void Test_AffixInteraction()
+    {
+        TestAffix1 testAffix1 = new TestAffix1();
+        testAffix1.InitAffix();
+
+        ActionData.AFFIX_DICTIONARY.Add(ActionData.AFFIX_LIST_ID.TEST_AFFIX_1, testAffix1);
+
+        TestAction1 testAction1 = new TestAction1();
+        testAction1.SetInitPropertiesSelfTarget();
+
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_BASIC, testAction1);
+
+        Test_ListAllAffixesInDictionary();
+
+        TestCharacter testChar1 = new TestCharacter();
+        testChar1.InitChar(true);
+
+        TestCharacter testChar2 = new TestCharacter();
+        testChar2.InitChar(false);
+        testChar2.m_Character.SetCharacterName("Enemy Test");
+
+        GetPlayerManager.AddCharacterToList(testChar1.m_Character);
+        GetPlayerManager.AddCharacterToList(testChar2.m_Character);
+
+        PerformActionDataModel testDataModel = new PerformActionDataModel(ActionData.ACTION_LIST_ID.ATTACK_BASIC, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET, testChar1.m_Character, testChar2.m_Character);
+
+        GetCombatManager.ProcessAction(testDataModel);
+
+        for (int i = 0; i < GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            Debug.Log("Health - " + GetPlayerManager.GetCharacterList()[i].GetCharacterName() + " : " + GetPlayerManager.GetCharacterList()[i].GetCharacterHealth());
+        }
+
+        GetCombatManager.ProcessAffix();
+
+        Debug.Log("Affixes Processed");
+
+        for (int i = 0; i < GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            Debug.Log("Health - " + GetPlayerManager.GetCharacterList()[i].GetCharacterName() + " : " + GetPlayerManager.GetCharacterList()[i].GetCharacterHealth());
+        }
+
+        Debug.Log("Test Case Over");
     }
 
     public void Test_CharacterInteraction2()

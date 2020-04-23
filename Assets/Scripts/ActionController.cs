@@ -60,11 +60,20 @@ public class ActionController
         Debug.Log("Affix " + aAffix.GetActionName() + " being used on " + aCharacter.GetCharacterName());
 
         PerformSelfAction(aAffix, aCharacter);
+
+        aAffix.AddToAffixUses(-1);
+
+        if (aAffix.GetAffixUses() <= 0)
+        {
+            AffixDepleated(aAffix);
+        }
     }
 
     public void AffixDepleated(GenericAffixModel aAffix)
     {
         //Delete the affix
+        Debug.Log("Affix " + aAffix.GetActionName() + "Depleated - Deleting (Not actually at the moment).");
+        
     }
     
     //Used mostly for 1 on 1 actions
@@ -260,14 +269,45 @@ public class ActionController
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used against Target: " + aDamagerReceiver.GetCharacterName());
 
-        aDamagerReceiver.SetCharacterHealth(aDamagerReceiver.GetCharacterHealth() - aAction.GetDamageAmount());
+        int actionDamageValue = aAction.GetDamageAmount();
+
+        Debug.Log("DEBUG - Type: " + aAction.GetType());
+
+        if (aAction.GetType().IsSubclassOf(typeof(GenericAffixModel)) ||
+            aAction.GetType() == typeof(GenericAffixModel))
+        {
+            Debug.Log("Action is GenericAffixModel type, attempting to stack.");
+
+            GenericAffixModel affixAction = (GenericAffixModel)aAction;
+            if (affixAction.GetIsStackable())
+            {
+                Debug.Log("Affix is stackable. Multiplying damage by " + affixAction.GetStackAmount() + " .");
+                actionDamageValue *= affixAction.GetStackAmount();
+            }
+        }
+
+        aDamagerReceiver.SetCharacterHealth(aDamagerReceiver.GetCharacterHealth() - actionDamageValue);
     }
 
     private void ApplyHeal(GenericCharacter aHealReceiver, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used on Target: " + aHealReceiver.GetCharacterName());
 
-        aHealReceiver.SetCharacterHealth(aHealReceiver.GetCharacterHealth() + aAction.GetHealAmount());
+        int actionHealValue = aAction.GetDamageAmount();
+
+        if (aAction.GetType() == typeof(GenericAffixModel))
+        {
+            Debug.Log("Action is GenericAffixModel type, attempting to stack.");
+
+            GenericAffixModel affixAction = (GenericAffixModel)aAction;
+            if (affixAction.GetIsStackable())
+            {
+                Debug.Log("Affix is stackable. Multiplying healing by " + affixAction.GetStackAmount() + " .");
+                actionHealValue *= affixAction.GetStackAmount();
+            }
+        }
+
+        aHealReceiver.SetCharacterHealth(aHealReceiver.GetCharacterHealth() + actionHealValue);
     }
 
     private void ApplyAffix(GenericCharacter aAffixReceiver, GenericAffixModel aAffix)

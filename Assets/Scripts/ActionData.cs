@@ -32,7 +32,8 @@ public class ActionData
     {
         NONE,
         EXHAUST,
-        DOUBLE_ATTACK
+        DOUBLE_ATTACK,
+        TEST_AFFIX_1
 
     }
 

@@ -79,17 +79,11 @@ public class CombatManager : MonoBehaviour
     public void ProcessAction(PerformActionDataModel aPerformActionDataModel)
     {
         m_ActionController.PerformAction(aPerformActionDataModel);
-        
+
     }
 
     public void ProcessAffix()
     {
-        //TODO: Create algorithm for processing affixes
-        //Who's turn is ending, etc... User side / Enemy side
-        //Get the side, look through that side's player list and do the affix
-        //Make another function for looking through to see who needs an affix done to them, then call this one after?
-        //Create the way to process affixes for the end of the turn
-
         //if combat state is player turn and character we are checking is == to player controlled
 
         foreach(var index in m_ActionUsersWithAffixes)
