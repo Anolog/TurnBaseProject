@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     static private PlayerManager m_PlayerManager;
     static public PlayerManager GetPlayerManager { get { return m_PlayerManager; } }
 
+    public TestCombatInterface cbIntTest;
+
     //static private ActionData m_ActionData;
     //static public ActionData GetActionData { get { return m_ActionData; } }
 
@@ -20,7 +22,7 @@ public class GameManager : MonoBehaviour
     }
     */
 
-	void Awake () 
+    void Awake () 
     {
         DontDestroyOnLoad(this);
 
@@ -49,9 +51,34 @@ public class GameManager : MonoBehaviour
         //Test_CharacterInteraction1();
         //Test_ListAllAbilitiesInDictionary();
         //Test_ActionInteraction();
+        //Test_AffixInteraction();
 
-        Test_AffixInteraction();
+        TestCharacter testChar = new TestCharacter();
+        testChar.InitChar(true);
 
+        TestCharacter testChar2 = new TestCharacter();
+        testChar2.InitChar(false);
+
+
+        TestAffix1 testAffix1 = new TestAffix1();
+        testAffix1.InitAffix();
+
+        ActionData.AFFIX_DICTIONARY.Add(ActionData.AFFIX_LIST_ID.TEST_AFFIX_1, testAffix1);
+
+        TestAction1 testAction1 = new TestAction1();
+        testAction1.SetInitPropertiesSelfTarget();
+
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_BASIC, testAction1);
+        
+        GetPlayerManager.AddCharacterToList(testChar.m_Character);
+        GetPlayerManager.AddCharacterToList(testChar2.m_Character);
+
+        PerformActionDataModel testDataModel = new PerformActionDataModel(ActionData.ACTION_LIST_ID.ATTACK_BASIC, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET, testChar.m_Character, testChar2.m_Character);
+
+        GetCombatManager.ProcessAction(testDataModel);
+
+        cbIntTest.CreateCharacterInformationDisplay(testChar.m_Character);
+        cbIntTest.CreateCharacterInformationDisplay(testChar2.m_Character);
     }
 
 	// Update is called once per frame

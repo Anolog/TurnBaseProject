@@ -135,6 +135,7 @@ public class GenericCharacter
         return m_AffixList;
     }
 
+    //TODO: DELETE THIS AS WELL
     public void AddAffixIDToAffixListOnCharacter(ActionData.AFFIX_LIST_ID aAffixID)
     {
         if (DoesAffixIDExistOnCharacter(aAffixID))
@@ -147,9 +148,12 @@ public class GenericCharacter
             //Get if stackable, or not
             if (affix.GetIsStackable() == true)
             {
-                
-            }
 
+            }
+            else
+            {
+                //refresh
+            }
             //If stackable
             //Change how the affix works somehow ?
             //If not stackable, reset that affix (Or just remove/add it again)
