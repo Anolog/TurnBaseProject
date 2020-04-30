@@ -19,7 +19,6 @@ public class CombatManager : MonoBehaviour
 
     public GenericCharacter m_CurrentPlayer;
 
-    private bool m_bIsPlayersTurn = false;
     private ushort m_TurnQueueIndex = 0;
 
     enum COMBAT_STATE
@@ -58,23 +57,36 @@ public class CombatManager : MonoBehaviour
             m_ActionUsersWithAffixes = new Dictionary<GenericCharacter, List<GenericAffixModel>>();
         }
 	}
-
-	// Use this for initialization
+    
 	void Start () 
     {
         ResetInitialActionUser();
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
-        //Maybe switch to tag check instead to see if less taxing
-        //Maybe move this into the update turn index? Or after it?
-		if (m_CurrentActionUser == m_CurrentPlayer)
-        {
-            m_bIsPlayersTurn = true;
-        }
+
 	}
+
+    public void OnPlayerCombatBegin()
+    {
+
+    }
+
+    public void OnPlayerCombatEnd()
+    {
+        m_CombatState = COMBAT_STATE.ENEMY_TURN;
+    }
+
+    public void OnEnemyCombatBegin()
+    {
+
+    }
+
+    public void OnEnemyCombatEnd()
+    {
+        m_CombatState = COMBAT_STATE.PLAYER_TURN;
+    }
 
     public void ProcessAction(PerformActionDataModel aPerformActionDataModel)
     {
