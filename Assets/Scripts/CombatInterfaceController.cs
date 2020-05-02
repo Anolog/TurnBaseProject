@@ -53,7 +53,9 @@ public class CombatInterfaceController : MonoBehaviour
 
     public void SetActionSelection()
     {
-        if (GameManager.GetCombatManager.m_CurrentActionUser.GetUsableActionIDList().Count < 4)
+        m_MainSelection.SetActive(false);
+        m_ActionSelection.SetActive(true);
+        if (GameManager.GetCombatManager.m_CurrentPlayer.GetUsableActionIDList().Count < 4)
         {
             m_ActionDownButton.SetActive(true);
             m_ActionUpButton.SetActive(true);
@@ -82,6 +84,10 @@ public class CombatInterfaceController : MonoBehaviour
     public void OnAbilityButtonPressed()
     {
         //This will call to create the list of abilities that the character has, but only with doing so for the ones categorized as ability
+        m_Model.UpdateListOfActions();
+        SetActionSelection();
+        //UpdateActionButtonVisuals(true);
+
     }
 
     public void OnSpellButtonPressed()
@@ -92,11 +98,17 @@ public class CombatInterfaceController : MonoBehaviour
 
     public void OnUpButtonPressed()
     {
+        //This will end horribly
+        m_Model.SetCurrentIndex(m_Model.GetCurrentIndex() - 4);
+
         UpdateActionButtonVisuals(false);
     }
 
     public void OnDownButtonPressed()
     {
+        //This will end really really bad as well probably...
+        m_Model.SetCurrentIndex(m_Model.GetCurrentIndex() + 4);
+
         UpdateActionButtonVisuals(true);
     }
 
@@ -110,7 +122,7 @@ public class CombatInterfaceController : MonoBehaviour
             {
                 if (m_ActionSelectionButtons[i] != null)
                 {
-                    if (i > actionList.Count)
+                    if (i > actionList.Count - 1)
                     {
                         m_ActionSelectionButtons[i].gameObject.SetActive(false);
                     }
@@ -120,6 +132,24 @@ public class CombatInterfaceController : MonoBehaviour
                         m_ActionSelectionButtons[i].gameObject.SetActive(true);
                     }
                 }
+            }
+
+            if (m_Model.GetCanDisplayNext())
+            {
+                m_ActionDownButton.SetActive(true);
+            }
+            else
+            {
+                m_ActionDownButton.SetActive(false);
+            }
+
+            if (m_Model.GetCanDisplayPrevious())
+            {
+                m_ActionUpButton.SetActive(true);
+            }
+            else
+            {
+                m_ActionUpButton.SetActive(false);
             }
         }
         else

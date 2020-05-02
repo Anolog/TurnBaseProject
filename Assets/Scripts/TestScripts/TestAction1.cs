@@ -41,4 +41,9 @@ public class TestAction1 : GenericActionModel
 
     }
 
+    public void SetName(string name)
+    {
+        m_Name = name;
+    }
+
 }

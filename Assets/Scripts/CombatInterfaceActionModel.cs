@@ -24,13 +24,17 @@ public class CombatInterfaceActionModel
         List<ActionData.ACTION_LIST_ID> actionList = new List<ActionData.ACTION_LIST_ID>();
         int amountAdded = 0;
 
-        for (int i = 0; amountAdded < ACTION_AMOUNT_TO_DISPLAY;  i = bMoveForwardsInList ? i++ : i--)
+        for (int i = 0; amountAdded < ACTION_AMOUNT_TO_DISPLAY; i++)
         {
             if (m_ListOfActions.Count >= amountAdded + m_CurrentListIndex)
             {
                 if (i + m_CurrentListIndex < 0)
                 {
                     m_CurrentListIndex = 0;
+                    break;
+                }
+                else if (i + m_CurrentListIndex > m_ListOfActions.Count - 1)
+                {
                     break;
                 }
                 else
@@ -53,21 +57,59 @@ public class CombatInterfaceActionModel
             }
         }
 
-        if (m_CurrentListIndex == m_ListOfActions.Count || amountAdded + m_CurrentListIndex >= m_ListOfActions.Count)
+        if (amountAdded < ACTION_AMOUNT_TO_DISPLAY)
         {
-            m_CurrentListIndex -= m_ListOfActions.Count % ACTION_AMOUNT_TO_DISPLAY;
             m_CanDisplayNext = false;
         }
 
-        if (m_ListOfActions.Count - (amountAdded + m_CurrentListIndex) >= ACTION_AMOUNT_TO_DISPLAY)
+        if (amountAdded == ACTION_AMOUNT_TO_DISPLAY)
         {
-            m_CanDisplayPrev = true;
+            if (m_ListOfActions.Count - amountAdded < 0 && m_CurrentListIndex != 0)
+            {
+                m_CurrentListIndex = 0;
+                m_CanDisplayNext = true;
+                m_CanDisplayPrev = false;
+            }
+            else if (m_CurrentListIndex == 0)
+            {
+                m_CanDisplayNext = true;
+                m_CanDisplayPrev = false;
+            }
+            else
+            {
+                m_CanDisplayNext = true;
+                m_CanDisplayPrev = true;
+            }
         }
         else
         {
-            m_CanDisplayPrev = false;
+            if (m_ListOfActions.Count - amountAdded >= ACTION_AMOUNT_TO_DISPLAY)
+            {
+                m_CanDisplayPrev = true;
+                m_CanDisplayNext = false;
+            }
         }
 
         return actionList;
+    }
+
+    public bool GetCanDisplayPrevious()
+    {
+        return m_CanDisplayPrev;
+    }
+
+    public bool GetCanDisplayNext()
+    {
+        return m_CanDisplayNext;
+    }
+
+    public void SetCurrentIndex(int aIndex)
+    {
+        m_CurrentListIndex = aIndex;
+    }
+
+    public int GetCurrentIndex()
+    {
+        return m_CurrentListIndex;
     }
 }

@@ -37,8 +37,8 @@ public class TestCharacter : MonoBehaviour
         m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.ATTACK_TWO);
         m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.ATTACK_THREE);
         m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.ATTACK_FOUR);
-        m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.SHIELD_ONE);
-        m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.SHIELD_TWO);
+        //m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.SHIELD_ONE);
+        //m_Character.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.SHIELD_TWO);
 
     }
 }

@@ -69,16 +69,39 @@ public class GameManager : MonoBehaviour
         testAction1.SetInitPropertiesSelfTarget();
 
         ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_BASIC, testAction1);
-        
+
+        TestAction1 testAction2 = new TestAction1();
+        testAction2.SetInitPropertiesSelfTarget();
+        testAction2.SetName("Action 2 Test");
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_ONE, testAction2);
+
+        TestAction1 testAction3 = new TestAction1();
+        testAction3.SetInitPropertiesSelfTarget();
+        testAction3.SetName("Action 3 Test");
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_TWO, testAction3);
+
+        TestAction1 testAction4 = new TestAction1();
+        testAction4.SetInitPropertiesSelfTarget();
+        testAction4.SetName("Action 4 Test");
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_THREE, testAction4);
+
+        TestAction1 testAction5 = new TestAction1();
+        testAction5.SetInitPropertiesSelfTarget();
+        testAction5.SetName("Action 5 Test");
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.ATTACK_FOUR, testAction5);
+
         GetPlayerManager.AddCharacterToList(testChar.m_Character);
         GetPlayerManager.AddCharacterToList(testChar2.m_Character);
 
-        PerformActionDataModel testDataModel = new PerformActionDataModel(ActionData.ACTION_LIST_ID.ATTACK_BASIC, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET, testChar.m_Character, testChar2.m_Character);
+        m_CombatManager.m_CurrentPlayer = testChar.m_Character;
 
-        GetCombatManager.ProcessAction(testDataModel);
+        //PerformActionDataModel testDataModel = new PerformActionDataModel(ActionData.ACTION_LIST_ID.ATTACK_BASIC, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET, testChar.m_Character, testChar2.m_Character);
+
+        //GetCombatManager.ProcessAction(testDataModel);
 
         cbIntTest.CreateCharacterInformationDisplay(testChar.m_Character);
         cbIntTest.CreateCharacterInformationDisplay(testChar2.m_Character);
+
     }
 
 	// Update is called once per frame
