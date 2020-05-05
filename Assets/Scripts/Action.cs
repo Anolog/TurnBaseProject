@@ -12,6 +12,7 @@ public class Action
     protected int m_StrengthAmount = 0;
     protected int m_ManaGainAmount = 0;
     protected int m_ActionGainAmount = 0;
+    protected int m_ActionCost = 0;
 
     protected bool m_bActionDealsDamage = false;
     protected bool m_bActionHeals = false;

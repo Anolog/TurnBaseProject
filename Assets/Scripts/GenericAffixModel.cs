@@ -7,6 +7,8 @@ public class GenericAffixModel : Action
     protected string m_Description = "This is a test description";
 
     //TODO: Add this for GenericActionModel as well ?
+    //REPLY: 
+    //TODO: See if this is actually used anywhere...
     protected ActionData.AFFIX_LIST_ID m_ID;
 
     protected bool m_IsStackable = false;

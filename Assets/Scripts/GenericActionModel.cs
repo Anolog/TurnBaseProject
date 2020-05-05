@@ -31,8 +31,6 @@ public class GenericActionModel : Action
     protected ACTION_TARGET_AMOUNT m_TargetAmount = ACTION_TARGET_AMOUNT.NO_TARGETS;
 
     protected int m_ManaCostAmount    = 0;
-    protected int m_ActionCostAmount  = 0;
-
 
     public ACTION_TYPE GetActionType()
     {

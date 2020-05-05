@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Make this a class to have all instead of more player specific???
 public class PlayerManager : MonoBehaviour 
 {
-    //Why did I think this class needed to inherate from GenericCharacter? :AmIRetarded?:
-
     //Maybe eventually make this an array with a cap on it once those things are worked out.
+    //TODO:
+    //Have this store the characters at all times it will be the main reference
+    //Then have it passed into the combat manager to have that work in there.
     List<GenericCharacter> m_ListOfCharacters = new List<GenericCharacter>();
+
+    private static int DEFAULT_USE_CAPACITY = 4;
+
+    //What we currently have
+    private int m_CurrentActionUses = 0;
+
+    //The capacity of it
+    private int m_CurrentActionUseCapacity = DEFAULT_USE_CAPACITY;
     
 	// Use this for initialization
 	void Start () 
@@ -21,6 +29,31 @@ public class PlayerManager : MonoBehaviour
     {
 		
 	}
+
+    public void ResetCurrentActionUses()
+    {
+        m_CurrentActionUses = m_CurrentActionUseCapacity;
+    }
+
+    public void SetCurrentActionUses(int aCount)
+    {
+        m_CurrentActionUses = aCount;
+    }
+
+    public int GetCurrentActionUses()
+    {
+        return m_CurrentActionUses;
+    }
+
+    public void AddToCurrentActionUses(int aAmountToAdd)
+    {
+        m_CurrentActionUses += aAmountToAdd;
+    }
+
+    public void SubtractToCurrentActionUses(int aAmountToSubtract)
+    {
+        m_CurrentActionUses -= aAmountToSubtract;
+    }
 
     public List<GenericCharacter> GetCharacterList()
     {
@@ -58,7 +91,7 @@ public class PlayerManager : MonoBehaviour
         CharacterDoesNotExistDebugLog(bDoesNameExistInList);
     }
 
-    public void RemoveCHaracterFromListByObject(GenericCharacter aCharacter)
+    public void RemoveCharacterFromListByObject(GenericCharacter aCharacter)
     {
         bool bDoesCharacterExist = false;
 

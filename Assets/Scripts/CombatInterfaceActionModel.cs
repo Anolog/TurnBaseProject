@@ -12,6 +12,11 @@ public class CombatInterfaceActionModel
     private bool m_CanDisplayNext = true;
     private bool m_CanDisplayPrev = false;
 
+    public List<ActionData.ACTION_LIST_ID> GetListOfActions()
+    {
+        return m_ListOfActions;
+    }
+
     public void UpdateListOfActions()
     {
         m_ListOfActions.Clear();

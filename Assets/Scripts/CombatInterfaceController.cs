@@ -21,6 +21,8 @@ public class CombatInterfaceController : MonoBehaviour
     [SerializeField]
     private Button[] m_MainSelectionButtons;
 
+    private int m_UserSelectedButton = -1;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -74,6 +76,7 @@ public class CombatInterfaceController : MonoBehaviour
     public void OnAttackButtonPressed()
     {
         //This will call the attack action, simple and easy
+        
     }
 
     public void OnDefendButtonPressed()
@@ -94,6 +97,27 @@ public class CombatInterfaceController : MonoBehaviour
     {
         //This will call to create the list of abilities that the character has, but only with doing so for the ones categorized as spells
 
+    }
+
+    public void SetUserButtonSelected(int aButton)
+    {
+        m_UserSelectedButton = aButton;
+    }
+
+    public void OnActionSelected()
+    {
+        if (m_UserSelectedButton > -1 && m_UserSelectedButton < 5)
+        {
+            ActionData.ACTION_LIST_ID actionID = m_Model.GetListOfActions()[m_Model.GetCurrentIndex() + m_UserSelectedButton];
+
+            Debug.Log("Action Selected with the ID: " + actionID + " Button No: " + m_UserSelectedButton + " With current list index: " + m_Model.GetCurrentIndex());
+
+
+        }
+
+        //m_ActionSelectionButtons[1];
+
+        m_UserSelectedButton = -1;
     }
 
     public void OnUpButtonPressed()
