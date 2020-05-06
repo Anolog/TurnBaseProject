@@ -21,6 +21,12 @@ public class CombatInterfaceController : MonoBehaviour
     [SerializeField]
     private Button[] m_MainSelectionButtons;
 
+    [SerializeField]
+    private Button m_EndTurnButton;
+
+    [SerializeField]
+    private Text m_ActionCountText;
+
     private int m_UserSelectedButton = -1;
 
 	// Use this for initialization
@@ -30,6 +36,7 @@ public class CombatInterfaceController : MonoBehaviour
         {
             m_Model = new CombatInterfaceActionModel();
             SetAllUIInactive();
+            SetEndTurnUIActive();
             SetMainSelectionState();
         }
 	}
@@ -40,12 +47,40 @@ public class CombatInterfaceController : MonoBehaviour
 		
 	}
 
+    public void SetActionCountText(int aAmount)
+    {
+        m_ActionCountText.text = "AP: " + aAmount;
+    }
+
     public void SetAllUIInactive()
     {
         m_MainSelection.SetActive(false);
         m_ActionSelection.SetActive(false);
         m_ActionUpButton.SetActive(false);
         m_ActionDownButton.SetActive(false);
+        m_ActionCountText.gameObject.SetActive(false);
+        m_EndTurnButton.gameObject.SetActive(false);
+    }
+
+    public void SetEndTurnUIActive()
+    {
+        m_EndTurnButton.gameObject.SetActive(true);
+
+        if (m_ActionCountText.gameObject.activeSelf == false)
+        {
+            m_ActionCountText.gameObject.SetActive(true);
+        }
+    }
+
+    public void SetUIForEnemyTurnState()
+    {
+        SetAllUIInactive();
+
+        m_MainSelection.SetActive(true);
+        m_ActionSelection.SetActive(true);
+        m_ActionUpButton.SetActive(true);
+        m_ActionDownButton.SetActive(true);
+        m_EndTurnButton.gameObject.SetActive(true);
     }
 
     public void SetMainSelectionState()
@@ -97,6 +132,11 @@ public class CombatInterfaceController : MonoBehaviour
     {
         //This will call to create the list of abilities that the character has, but only with doing so for the ones categorized as spells
 
+    }
+
+    public void OnEndTurnButtonPressed()
+    {
+        Debug.Log("End Turn Button was pressed");
     }
 
     public void SetUserButtonSelected(int aButton)
