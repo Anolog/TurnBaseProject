@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CombatInterfaceController : MonoBehaviour
 {
-    CombatInterfaceActionModel m_Model;
+    private CombatInterfaceActionModel m_Model;
 
     [SerializeField]
     private GameObject m_MainSelection;
@@ -220,5 +220,10 @@ public class CombatInterfaceController : MonoBehaviour
         {
             //lol wut
         }
+    }
+
+    public CombatInterfaceActionModel GetInterfaceModel()
+    {
+        return m_Model;
     }
 }

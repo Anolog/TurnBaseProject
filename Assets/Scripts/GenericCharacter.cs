@@ -128,44 +128,6 @@ public class GenericCharacter
         m_ActionList.Clear();
     }
 
-    //TODO: DELETE / MOVE THIS BECAUSE IT IS NOW BEING MOVED INTO THE COMBAT MANGER
-
-    public List<ActionData.AFFIX_LIST_ID> GetAffixListOnCharacter()
-    {
-        return m_AffixList;
-    }
-
-    //TODO: DELETE THIS AS WELL
-    public void AddAffixIDToAffixListOnCharacter(ActionData.AFFIX_LIST_ID aAffixID)
-    {
-        if (DoesAffixIDExistOnCharacter(aAffixID))
-        {
-            //TODO: Add a check for if exists, though it always should.
-            //Grab this from the character instead you retard... if possible....? 
-            GenericAffixModel affix = ActionData.AFFIX_DICTIONARY[aAffixID];
-
-            //If already exists
-            //Get if stackable, or not
-            if (affix.GetIsStackable() == true)
-            {
-
-            }
-            else
-            {
-                //refresh
-            }
-            //If stackable
-            //Change how the affix works somehow ?
-            //If not stackable, reset that affix (Or just remove/add it again)
-        }
-
-        else
-        {
-            //TODO: Potentially add a check for the size / limit of affixes allowed.... if deciding to put a limit
-            m_AffixList.Add(aAffixID);
-        }
-    }
-
     public bool DoesAffixIDExistOnCharacter(ActionData.AFFIX_LIST_ID aAffixID)
     {
         bool bExists = false;

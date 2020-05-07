@@ -20,7 +20,7 @@ public class CombatInterfaceActionModel
     public void UpdateListOfActions()
     {
         m_ListOfActions.Clear();
-        m_ListOfActions = GameManager.GetCombatManager.m_CurrentPlayer.GetUsableActionIDList();
+        m_ListOfActions = GameManager.GetCombatManager.GetCurrentSelectedCharacter().GetUsableActionIDList();
         m_CurrentListIndex = 0;
     }
 

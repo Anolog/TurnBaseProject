@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Used to globally store the characters throughout the game, then the list in here is passed into the combat manager to initialize it there
 public class PlayerManager : MonoBehaviour 
 {
     //Maybe eventually make this an array with a cap on it once those things are worked out.

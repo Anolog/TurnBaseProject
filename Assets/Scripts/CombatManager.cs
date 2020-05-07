@@ -14,17 +14,31 @@ public class CombatManager : MonoBehaviour
     private ActionController m_ActionController;
     private ActionAffixController m_AffixController;
 
-    //Whos turn is it?
+    private bool m_IsPlayerTurn = true;
+
+    //TODO: Get rid of these 3 variables
     public GenericCharacter m_CurrentActionUser;
-
     public GenericCharacter m_CurrentPlayer;
-
     private ushort m_TurnQueueIndex = 0;
+
+    private GenericCharacter m_CurrentSelectedCharacter;
+
+    //TODO: This is set to test so change this later on
+    [SerializeField]
+    private CombatInterfaceController m_CombatUIController;
 
     enum COMBAT_STATE
     {
         PLAYER_TURN,
         ENEMY_TURN
+    }
+
+    //Dunno if i need this....
+    enum PLAYER_TURN_STATES
+    {
+        CHARACTER_SELECTED,
+        SELECTING_TARGET,
+
     }
 
     private COMBAT_STATE m_CombatState = COMBAT_STATE.PLAYER_TURN;
@@ -68,9 +82,14 @@ public class CombatManager : MonoBehaviour
 
 	}
 
+    public GenericCharacter GetCurrentSelectedCharacter()
+    {
+        return m_CurrentSelectedCharacter;
+    }
+
     public void OnPlayerCombatBegin()
     {
-
+        //Combat Interface -> Set Initial UI ? 
     }
 
     public void OnPlayerCombatEnd()
@@ -80,7 +99,7 @@ public class CombatManager : MonoBehaviour
 
     public void OnEnemyCombatBegin()
     {
-
+        //Combat Interface -> Hide specific UI
     }
 
     public void OnEnemyCombatEnd()
@@ -158,6 +177,9 @@ public class CombatManager : MonoBehaviour
     }
     */
 
+      
+    //TODO: Get rid of this because it's not being used anymore
+    //      Not doing a turnbased in order of whoever, it's now, you select them
     public void ResetInitialActionUser()
     {
         m_CurrentActionUser = null;
@@ -199,6 +221,30 @@ public class CombatManager : MonoBehaviour
         else
         {
             m_CurrentPlayer = null;
+        }
+    }
+
+    public void OnCharacterSelected(GenericCharacter aGenericCharacter)
+    {
+        if (m_CombatState == COMBAT_STATE.PLAYER_TURN)
+        {
+            if (aGenericCharacter.IsPlayerControlled())
+            {
+                if (m_CurrentSelectedCharacter == null)
+                {
+                    m_CurrentSelectedCharacter = aGenericCharacter;
+
+                    m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
+                }
+                else
+                {
+                    
+                }
+            }
+            else
+            {
+                //Figure out what we wanna do here
+            }
         }
     }
 }
