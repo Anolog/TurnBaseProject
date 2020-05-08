@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GenericCharacterController : MonoBehaviour
 {
+    //TODO:
+    //Create JSON Utility function to call FromJSON to create the character
+    //https://docs.unity3d.com/ScriptReference/JsonUtility.FromJson.html
+
     GenericCharacter m_CharacterStats;
 
     SpriteRenderer m_SpriteRenderer;

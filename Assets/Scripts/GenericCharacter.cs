@@ -8,6 +8,8 @@ public class GenericCharacter
     protected bool m_bIsCharacterDead = false;
 
     protected string m_CharacterName = "";
+    protected string m_SpriteFilePath = "";
+    protected string m_SpriteFileName = "";
 
     protected int m_CharacterHealth = 100;
     protected int m_CharacterMana = 0;
@@ -42,6 +44,28 @@ public class GenericCharacter
             //Change this to get the name as well from wherever it is being stored
             Debug.Log("Action list ID: " + m_ActionList);
         }
+    }
+
+    public string GetSpriteFilePath()
+    {
+        return m_SpriteFilePath;
+    }
+
+    public string GetSpriteFileName()
+    {
+        return m_SpriteFileName;
+    }
+
+    //Mostly for debugging
+    public void SetSpriteFilePath(string aFilePath)
+    {
+        m_SpriteFilePath = aFilePath;
+    }
+
+    //Mostly for debugging
+    public void SetSpriteFileName(string aFileName)
+    {
+        m_SpriteFileName = aFileName;
     }
 
     public string GetCharacterName()

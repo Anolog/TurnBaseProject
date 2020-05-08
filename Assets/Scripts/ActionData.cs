@@ -21,7 +21,11 @@ public class ActionData
         SHIELD_TWO,
 
         SPELL_HEAL_ONE,
-        SPELL_HEAL_TWO
+        SPELL_HEAL_TWO,
+
+        STRIKE,
+        HEAL_TARGET,
+        MULTI_STRIKE
     }
 
     //Master list of the abilities
@@ -33,7 +37,8 @@ public class ActionData
         NONE,
         EXHAUST,
         DOUBLE_ATTACK,
-        TEST_AFFIX_1
+        DOT_BASIC,
+
 
     }
 
