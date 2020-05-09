@@ -25,7 +25,7 @@ public class CombatManager : MonoBehaviour
 
     //TODO: This is set to test so change this later on
     [SerializeField]
-    private CombatInterfaceController m_CombatUIController;
+    public CombatInterfaceController m_CombatUIController;
 
     enum COMBAT_STATE
     {
@@ -85,6 +85,11 @@ public class CombatManager : MonoBehaviour
     public GenericCharacter GetCurrentSelectedCharacter()
     {
         return m_CurrentSelectedCharacter;
+    }
+
+    public void SetCurrentSelectedCharacter(GenericCharacter aCharacter)
+    {
+        m_CurrentSelectedCharacter = aCharacter;
     }
 
     public void OnPlayerCombatBegin()
@@ -230,15 +235,11 @@ public class CombatManager : MonoBehaviour
         {
             if (aGenericCharacter.IsPlayerControlled())
             {
-                if (m_CurrentSelectedCharacter == null)
+                if (m_CurrentSelectedCharacter != aGenericCharacter)
                 {
                     m_CurrentSelectedCharacter = aGenericCharacter;
 
                     m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
-                }
-                else
-                {
-                    
                 }
             }
             else

@@ -48,5 +48,6 @@ public class GenericCharacterController : MonoBehaviour
         Debug.Log("DEBUG - OBJECT WAS CLICKED: " + this.name);
 
         GameManager.GetCombatManager.OnCharacterSelected(m_CharacterStats);
+        GameManager.GetCombatManager.m_CombatUIController.UpdateActionButtonVisuals(true);
     }
 }

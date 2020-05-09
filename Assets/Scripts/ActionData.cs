@@ -23,6 +23,8 @@ public class ActionData
         SPELL_HEAL_ONE,
         SPELL_HEAL_TWO,
 
+        TEST_ACTION_1,
+
         STRIKE,
         HEAL_TARGET,
         MULTI_STRIKE
@@ -38,6 +40,7 @@ public class ActionData
         EXHAUST,
         DOUBLE_ATTACK,
         DOT_BASIC,
+        TEST_AFFIX_1
 
 
     }

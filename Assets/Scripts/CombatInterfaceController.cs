@@ -92,7 +92,7 @@ public class CombatInterfaceController : MonoBehaviour
     {
         m_MainSelection.SetActive(false);
         m_ActionSelection.SetActive(true);
-        if (GameManager.GetCombatManager.m_CurrentPlayer.GetUsableActionIDList().Count < 4)
+        if (GameManager.GetCombatManager.GetCurrentSelectedCharacter().GetUsableActionIDList().Count < 4)
         {
             m_ActionDownButton.SetActive(true);
             m_ActionUpButton.SetActive(true);
