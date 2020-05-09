@@ -152,10 +152,8 @@ public class CombatInterfaceController : MonoBehaviour
 
             Debug.Log("Action Selected with the ID: " + actionID + " Button No: " + m_UserSelectedButton + " With current list index: " + m_Model.GetCurrentIndex());
 
-
+            GameManager.GetCombatManager.OnActionSelected(actionID);
         }
-
-        //m_ActionSelectionButtons[1];
 
         m_UserSelectedButton = -1;
     }

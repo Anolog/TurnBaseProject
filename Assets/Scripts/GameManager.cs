@@ -59,8 +59,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update () 
     {
-		
-	}
+        Test_LogCharHealth();
+    }
 
     public void Test_CharacterWithUISwapping()
     {
@@ -82,8 +82,8 @@ public class GameManager : MonoBehaviour
 
         m_Char1.GetComponent<Test_Character_Proper_1>().Init();
         m_Char2.GetComponent<Test_Character_Proper_2>().Init();
-        cbIntTest.CreateCharacterInformationDisplay(GameManager.GetPlayerManager.GetCharacterList()[0]);
-        cbIntTest.CreateCharacterInformationDisplay(GameManager.GetPlayerManager.GetCharacterList()[1]);
+        //cbIntTest.CreateCharacterInformationDisplay(GameManager.GetPlayerManager.GetCharacterList()[0]);
+        //cbIntTest.CreateCharacterInformationDisplay(GameManager.GetPlayerManager.GetCharacterList()[1]);
 
         m_CombatManager.SetCurrentSelectedCharacter(GameManager.GetPlayerManager.GetCharacterList()[0]);
         m_CombatManager.m_CombatUIController = combatInterface.GetComponent<CombatInterfaceController>();
@@ -92,6 +92,12 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void Test_LogCharHealth()
+    {
+        Debug.Log("Name: " + GameManager.GetPlayerManager.GetCharacterList()[0].GetCharacterName() + " Health: " + GameManager.GetPlayerManager.GetCharacterList()[0].GetCharacterHealth());
+        Debug.Log("Name: " + GameManager.GetPlayerManager.GetCharacterList()[1].GetCharacterName() + " Health: " + GameManager.GetPlayerManager.GetCharacterList()[1].GetCharacterHealth());
+
+    }
 
     public void Test_AddAllSkillsToList()
     {

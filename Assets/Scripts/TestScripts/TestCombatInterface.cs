@@ -46,13 +46,13 @@ public class TestCombatInterface : MonoBehaviour
         if (CharCount == 0)
         {
             nameHealthMana.rectTransform.localPosition = new Vector3(-400, 300, 0);
+            CharCount++;
         }
         else
         {
             nameHealthMana.rectTransform.localPosition = new Vector3(400, 300, 0);
+            CharCount--;
         }
-
-        CharCount++;
 
     }
 }

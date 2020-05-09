@@ -22,10 +22,12 @@ public class CombatManager : MonoBehaviour
     private ushort m_TurnQueueIndex = 0;
 
     private GenericCharacter m_CurrentSelectedCharacter;
+    private ActionData.ACTION_LIST_ID m_CurrentSelectedAction = ActionData.ACTION_LIST_ID.NONE;
 
     //TODO: This is set to test so change this later on
     [SerializeField]
     public CombatInterfaceController m_CombatUIController;
+
 
     enum COMBAT_STATE
     {
@@ -233,13 +235,55 @@ public class CombatManager : MonoBehaviour
     {
         if (m_CombatState == COMBAT_STATE.PLAYER_TURN)
         {
+            //If it is the players turn, and we are selecting a player party member
             if (aGenericCharacter.IsPlayerControlled())
             {
+                //Do we have something selected already and is it not equal to the new selection?
                 if (m_CurrentSelectedCharacter != aGenericCharacter)
                 {
-                    m_CurrentSelectedCharacter = aGenericCharacter;
+                    //If we don't have a selected action and are just swapping characters
+                    if (m_CurrentSelectedAction == ActionData.ACTION_LIST_ID.NONE)
+                    {
+                        m_CurrentSelectedCharacter = aGenericCharacter;
 
-                    m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
+                        m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
+                    }
+                    else
+                    {
+                        //If we have an action and users selected...
+                        //Create perform action data and send it to be used
+                        //If it's single target, do this, else, the rest will be automatically sorted
+                        if (ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount() == GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET)
+                        {
+                            PerformActionDataModel performActionDataModel = new PerformActionDataModel(m_CurrentSelectedAction, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET,
+                                                                                                       m_CurrentSelectedCharacter, aGenericCharacter);
+
+                            m_ActionController.PerformAction(performActionDataModel);
+                        }
+                        else
+                        {
+                            //Won't attack everyone on your team, perhaps change this?
+                            if (ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount() == GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_OFFENSIVE &&
+                                !aGenericCharacter.IsPlayerControlled())
+                            {
+                                PerformActionDataModel performActionDataModel = new PerformActionDataModel(m_CurrentSelectedAction, ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount(),
+                                                                                                           m_CurrentSelectedCharacter);
+                            }
+                            else
+                            {
+                                Debug.Log("Can't offensive on teammates");
+                            }
+                        }
+
+                        //Do some sort of sort for which character to have selected afterwards?
+                        m_CurrentSelectedAction = ActionData.ACTION_LIST_ID.NONE;
+
+                        //TODO: Clean this up
+                        m_CombatUIController.SetAllUIInactive();
+                        m_CombatUIController.SetEndTurnUIActive();
+                        m_CombatUIController.SetMainSelectionState();
+
+                    }
                 }
             }
             else
@@ -248,4 +292,10 @@ public class CombatManager : MonoBehaviour
             }
         }
     }
+
+    public void OnActionSelected(ActionData.ACTION_LIST_ID aActionID)
+    {
+        m_CurrentSelectedAction = aActionID;
+    }
+
 }

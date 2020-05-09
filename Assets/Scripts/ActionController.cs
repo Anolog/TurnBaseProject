@@ -91,7 +91,7 @@ public class ActionController
 
         if (aAction.GetDoesActionHeal())
         {
-            ApplyHeal(aAttacker, aAction);
+            ApplyHeal(aDefender, aAction);
         }
 
         if (aAction.GetDoesActionHaveAffix())
@@ -293,7 +293,7 @@ public class ActionController
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used on Target: " + aHealReceiver.GetCharacterName());
 
-        int actionHealValue = aAction.GetDamageAmount();
+        int actionHealValue = aAction.GetHealAmount();
 
         if (aAction.GetType() == typeof(GenericAffixModel))
         {
