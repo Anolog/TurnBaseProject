@@ -16,6 +16,7 @@ public class GenericCharacter
     protected bool m_CharacterHasMana = false;
     protected int m_CharacterTurnDamage = 0;
 
+    //TODO: Delete the stuff below, not being used anymore ? 
     //Amount of damage taken every every rate
     protected int m_CharacterRealTimeDamage = 0;
     protected static int REAL_TIME_DAMAGE_DEFAULT = 1;
@@ -30,11 +31,21 @@ public class GenericCharacter
     protected int m_AmountOfAttacksThisTurn = 0;
     protected int m_AmountOfActionsThisTurn = 0;
 
-    //Temp for now, change to dictionary or something later
+    //List of actions character can use
     protected List<ActionData.ACTION_LIST_ID> m_ActionList = new List<ActionData.ACTION_LIST_ID>();
 
     //List of affixes on the generic character
     protected List<ActionData.AFFIX_LIST_ID> m_AffixList = new List<ActionData.AFFIX_LIST_ID>();
+
+    //List of equipment
+    protected Dictionary<ItemData.ITEM_TYPE, ItemData.ITEM_ID> m_Equipment = new Dictionary<ItemData.ITEM_TYPE, ItemData.ITEM_ID>()
+    {
+        { ItemData.ITEM_TYPE.CHEST,  ItemData.ITEM_ID.NONE  },
+        { ItemData.ITEM_TYPE.HELM,   ItemData.ITEM_ID.NONE   },
+        { ItemData.ITEM_TYPE.WEAPON, ItemData.ITEM_ID.NONE },
+        { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE   },
+        { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE   }
+    };
 
     public void ListUsableActions()
     {
@@ -171,5 +182,91 @@ public class GenericCharacter
     public void UseCurrentAction(ActionData.ACTION_LIST_ID aActionID)
     {
         
+    }
+
+    public List<ItemData.ITEM_ID> GetEquipmentIDList()
+    {
+        List<ItemData.ITEM_ID> equipment = new List<ItemData.ITEM_ID>();
+
+        foreach(var index in m_Equipment)
+        {
+            equipment.Add(index.Value);
+        }
+
+        return equipment;
+    }
+
+    public bool IsEquipSlotFull(ItemData.ITEM_TYPE aItemType)
+    {
+        bool bIsSlotFull = false;
+
+        if (aItemType != ItemData.ITEM_TYPE.RING)
+        {
+            if (m_Equipment[aItemType] != ItemData.ITEM_ID.NONE)
+            {
+                bIsSlotFull = true;
+            }
+        }
+        else
+        {
+            int ringCount = 0;
+
+            foreach (var index in m_Equipment)
+            {
+                if (index.Key == ItemData.ITEM_TYPE.RING &&
+                    index.Value != ItemData.ITEM_ID.NONE)
+                {
+                    ringCount++;
+                }
+            }
+
+            if (ringCount == 2)
+            {
+                bIsSlotFull = true;
+            }
+        }
+
+        return bIsSlotFull;
+    }
+
+    public bool IsItemEquippedOnCharacter(ItemData.ITEM_ID aItemID)
+    {
+        bool bExists = false;
+
+        foreach (var index in m_Equipment)
+        {
+            if (index.Value == aItemID)
+            {
+                bExists = true;
+            }
+        }
+
+        return bExists;
+    }
+
+    public GenericItem GetEquippedItemByID(ItemData.ITEM_ID aItemID)
+    {
+        GenericItem item = new GenericItem();
+
+        if (IsItemEquippedOnCharacter(aItemID))
+        {
+            item = ItemData.ITEM_DICTIONARY[aItemID];
+        }
+
+        return item;
+    }
+
+    public void AddEquipmentToCharacter(ItemData.ITEM_ID aItemID)
+    {
+        ItemData.ITEM_TYPE itemType = ItemData.ITEM_DICTIONARY[aItemID].GetItemType();
+
+        if (IsEquipSlotFull(itemType) == false)
+        {
+            m_Equipment[itemType] = aItemID;
+        }
+        else
+        {
+            Debug.Log("Warning: aItemID: " + aItemID + " cannot be added, the slot is already filled");
+        }
     }
 }
