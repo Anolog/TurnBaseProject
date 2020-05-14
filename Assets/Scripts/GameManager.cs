@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update () 
     {
-        Test_LogCharHealth();
+        //Test_LogCharHealth();
     }
 
     public void Test_CharacterWithUISwapping()
@@ -90,6 +90,17 @@ public class GameManager : MonoBehaviour
         m_CombatManager.m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
         //combatInterface.GetComponent<CombatInterfaceController>().GetInterfaceModel().UpdateListOfActions();
 
+        Test_ItemEquip();
+
+    }
+
+    public void Test_ItemEquip()
+    {
+        Test_Equipment1 testItem = new Test_Equipment1();
+        testItem.Init();
+        ItemData.ITEM_DICTIONARY.Add(ItemData.ITEM_ID.TEST_ITEM_WEAPON, testItem);
+
+        m_PlayerManager.GetCharacterList()[0].AddEquipmentToCharacter(ItemData.ITEM_ID.TEST_ITEM_WEAPON);
     }
 
     public void Test_LogCharHealth()

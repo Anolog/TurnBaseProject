@@ -43,7 +43,6 @@ public class GenericCharacter
         { ItemData.ITEM_TYPE.CHEST,  ItemData.ITEM_ID.NONE  },
         { ItemData.ITEM_TYPE.HELM,   ItemData.ITEM_ID.NONE   },
         { ItemData.ITEM_TYPE.WEAPON, ItemData.ITEM_ID.NONE },
-        { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE   },
         { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE   }
     };
 
@@ -200,30 +199,9 @@ public class GenericCharacter
     {
         bool bIsSlotFull = false;
 
-        if (aItemType != ItemData.ITEM_TYPE.RING)
+        if (m_Equipment[aItemType] != ItemData.ITEM_ID.NONE)
         {
-            if (m_Equipment[aItemType] != ItemData.ITEM_ID.NONE)
-            {
-                bIsSlotFull = true;
-            }
-        }
-        else
-        {
-            int ringCount = 0;
-
-            foreach (var index in m_Equipment)
-            {
-                if (index.Key == ItemData.ITEM_TYPE.RING &&
-                    index.Value != ItemData.ITEM_ID.NONE)
-                {
-                    ringCount++;
-                }
-            }
-
-            if (ringCount == 2)
-            {
-                bIsSlotFull = true;
-            }
+            bIsSlotFull = true;
         }
 
         return bIsSlotFull;
@@ -256,6 +234,7 @@ public class GenericCharacter
         return item;
     }
 
+    //TODO: If, is player, take the previous equip item, and put it in inventory
     public void AddEquipmentToCharacter(ItemData.ITEM_ID aItemID)
     {
         ItemData.ITEM_TYPE itemType = ItemData.ITEM_DICTIONARY[aItemID].GetItemType();
@@ -267,6 +246,18 @@ public class GenericCharacter
         else
         {
             Debug.Log("Warning: aItemID: " + aItemID + " cannot be added, the slot is already filled");
+        }
+    }
+
+    public void RemoveEquipmentFromCharacter(ItemData.ITEM_TYPE aItemType)
+    {
+        if (IsEquipSlotFull(aItemType))
+        {
+            m_Equipment[aItemType] = ItemData.ITEM_ID.NONE;
+        }
+        else
+        {
+            Debug.Log("Warning: aItemType:" + aItemType.ToString() + " does not have equipment.");
         }
     }
 }

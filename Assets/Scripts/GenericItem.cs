@@ -13,6 +13,24 @@ public class GenericItem
     protected int m_ManaRegen = 0;
     protected int m_Strength = 0;
     protected int m_ShieldAmount = 0;
+    protected ActionData.AFFIX_LIST_ID m_Affix = ActionData.AFFIX_LIST_ID.NONE;
+
+    public ActionData.AFFIX_LIST_ID GetItemAffix()
+    {
+        return m_Affix;
+    }
+
+    public bool DoesItemHaveAffix()
+    {
+        bool bHasAffix = false;
+
+        if (m_Affix != ActionData.AFFIX_LIST_ID.NONE)
+        {
+            bHasAffix = true;
+        }
+
+        return bHasAffix;
+    }
 
     public ItemData.ITEM_TYPE GetItemType()
     {

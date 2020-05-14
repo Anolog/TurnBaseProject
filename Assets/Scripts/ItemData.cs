@@ -16,7 +16,7 @@ public class ItemData
     public enum ITEM_ID
     {
         NONE,
-
+        TEST_ITEM_WEAPON,
     }
 
     //Master list of all the items
