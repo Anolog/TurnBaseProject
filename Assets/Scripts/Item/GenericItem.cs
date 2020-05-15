@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class GenericItem
 {
     protected ItemData.ITEM_TYPE m_ItemType = ItemData.ITEM_TYPE.NONE;
-    protected string m_Name = "";
+    protected string m_Name = "Generic Item";
     protected string m_Description = "";
 
     protected int m_Health = 0;
@@ -12,6 +12,7 @@ public class GenericItem
     protected int m_Mana = 0;
     protected int m_ManaRegen = 0;
     protected int m_Strength = 0;
+    protected int m_SpellPower = 0;
     protected int m_ShieldAmount = 0;
     protected ActionData.AFFIX_LIST_ID m_Affix = ActionData.AFFIX_LIST_ID.NONE;
 
@@ -75,5 +76,10 @@ public class GenericItem
     public int GetShield()
     {
         return m_ShieldAmount;
+    }
+
+    public int GetSpellPower()
+    {
+        return m_SpellPower;
     }
 }

@@ -6,7 +6,7 @@ public class Test_Action_Proper_1 : GenericActionModel
 {
     public void Init()
     {
-        m_ActionType = ACTION_TYPE.OFFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.OFFENSIVE;
         m_TargetAmount = ACTION_TARGET_AMOUNT.SINGLE_TARGET;
 
         m_SpellAffix1 = ActionData.AFFIX_LIST_ID.DOT_BASIC;

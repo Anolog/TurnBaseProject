@@ -6,7 +6,7 @@ public class TestAction1 : GenericActionModel
 {
     public void SetInitProperties()
     {
-        m_ActionType = ACTION_TYPE.OFFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.OFFENSIVE;
 
         m_DamageAmount = 10;
         m_Name = "Test Action, Basic";
@@ -17,7 +17,7 @@ public class TestAction1 : GenericActionModel
 
     public void SetInitPropertiesSelfTarget()
     {
-        m_ActionType = ACTION_TYPE.OFFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.OFFENSIVE;
 
         m_DamageAmount = 60;
         m_Name = "Test Action, Self Target, with affix";
@@ -31,7 +31,7 @@ public class TestAction1 : GenericActionModel
 
     public void SetInitPropertiesSelfTargetDefensive()
     {
-        m_ActionType = ACTION_TYPE.DEFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.DEFENSIVE;
 
         m_ShieldAmount = 40;
         m_Name = "Test Action, Self Target Defensive";

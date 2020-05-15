@@ -11,23 +11,31 @@ public class GenericCharacter
     protected string m_SpriteFilePath = "";
     protected string m_SpriteFileName = "";
 
+    enum STAT_INDEX
+    {
+        HEALTH,
+        MANA,
+        MANA_REGEN,
+        SHIELD,
+        STRENGTH,
+        SPELL_POWER
+    }
+
+    //protected int[] m_CharacterStats = { 100, 0, 0, 0, 0, 0 };
+
     protected int m_CharacterHealth = 100;
     protected int m_CharacterMana = 0;
+    protected int m_ManaGain = 0;
+    protected int m_Shield = 0;
+    protected int m_Strength = 0;
+    protected int m_SpellPower = 0;
+
+    protected bool m_IsCharacterDead = false;
     protected bool m_CharacterHasMana = false;
+
     protected int m_CharacterTurnDamage = 0;
 
-    //TODO: Delete the stuff below, not being used anymore ? 
-    //Amount of damage taken every every rate
-    protected int m_CharacterRealTimeDamage = 0;
-    protected static int REAL_TIME_DAMAGE_DEFAULT = 1;
-
-    //How often health decreases in seconds
-    protected float m_CharacterRealTimeDamageRate = 0;
-    protected static float REAL_TIME_DAMAGE_RATE_DEFAULT = 1.0f;
-
-    //Can change
-    protected int m_MaxPlayerAction = 3;
-    protected int m_CurrentPlayerAction = 0;
+    //TODO: Use for tracking later, had this set up at one point but changed due to refactor
     protected int m_AmountOfAttacksThisTurn = 0;
     protected int m_AmountOfActionsThisTurn = 0;
 
@@ -259,5 +267,79 @@ public class GenericCharacter
         {
             Debug.Log("Warning: aItemType:" + aItemType.ToString() + " does not have equipment.");
         }
+    }
+
+    public int[] GetEquipStatsTotal()
+    {
+        int[] equipStatsArray =
+        {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        };
+
+        foreach (var equip in m_Equipment)
+        {
+            equipStatsArray[(int)STAT_INDEX.HEALTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetHealth();
+            equipStatsArray[(int)STAT_INDEX.MANA] += ItemData.ITEM_DICTIONARY[equip.Value].GetMana();
+            equipStatsArray[(int)STAT_INDEX.MANA_REGEN] += ItemData.ITEM_DICTIONARY[equip.Value].GetManaRegen();
+            equipStatsArray[(int)STAT_INDEX.SHIELD] += ItemData.ITEM_DICTIONARY[equip.Value].GetShield();
+            equipStatsArray[(int)STAT_INDEX.SPELL_POWER] += ItemData.ITEM_DICTIONARY[equip.Value].GetSpellPower();
+            equipStatsArray[(int)STAT_INDEX.STRENGTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetStrength();
+        }
+
+        return equipStatsArray;
+    }
+
+    public int[] GetAffixStatsTotal()
+    {
+        int[] affixStatsArray =
+        {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        };
+
+        //TODO: Affix cannot restore mana? 
+        foreach (var affix in GameManager.GetCombatManager.m_ActionUsersWithAffixes[this])
+        {
+            int stackAmount = affix.GetStackAmount();
+
+            affixStatsArray[(int)STAT_INDEX.HEALTH] += (affix.GetHealAmount() * stackAmount);
+            affixStatsArray[(int)STAT_INDEX.MANA] += 0;
+            affixStatsArray[(int)STAT_INDEX.MANA_REGEN] += 0;
+            affixStatsArray[(int)STAT_INDEX.SHIELD] += (affix.GetShieldAmount() * stackAmount);
+            affixStatsArray[(int)STAT_INDEX.SPELL_POWER] += (affix.GetSpellPower() * stackAmount);
+            affixStatsArray[(int)STAT_INDEX.STRENGTH] += (affix.GetStrength() * stackAmount);
+        }
+
+        return affixStatsArray;
+    }
+
+    public int[] GetCharacterTotalStats()
+    {
+        int[] charStatTotal =
+        {
+            m_CharacterHealth,
+            m_CharacterMana,
+            m_ManaGain,
+            m_Shield,
+            m_SpellPower,
+            m_Strength
+        };
+
+        for (int i = 0; i < charStatTotal.Length - 1; i++)
+        {
+            charStatTotal[i] += GetEquipStatsTotal()[i];
+            charStatTotal[i] += GetAffixStatsTotal()[i];
+        }
+
+        return charStatTotal;
     }
 }

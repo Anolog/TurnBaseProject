@@ -6,7 +6,7 @@ public class TestActionMulti : GenericActionModel
 {
     public void SetInitPropertiesOffensive()
     {
-        m_ActionType = ACTION_TYPE.OFFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.OFFENSIVE;
 
         m_DamageAmount = 30;
         m_Name = "Test Action, Multi Offensive";
@@ -17,7 +17,7 @@ public class TestActionMulti : GenericActionModel
 
     public void SetInitPropertiesDefensive()
     {
-        m_ActionType = ACTION_TYPE.DEFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.DEFENSIVE;
 
         m_DamageAmount = 15;
         m_Name = "Test Action, Multi Defensive";
@@ -28,7 +28,7 @@ public class TestActionMulti : GenericActionModel
 
     public void SetInitPropertiesAll()
     {
-        m_ActionType = ACTION_TYPE.OFFENSIVE;
+        m_ActionOffOrDef = ACTION_OFF_OR_DEF.OFFENSIVE;
 
         m_DamageAmount = 25;
         m_Name = "Test Action, All Targets";

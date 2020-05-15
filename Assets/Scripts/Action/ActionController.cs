@@ -69,13 +69,14 @@ public class ActionController
         }
     }
 
+    //TODO: Get rid of affix
     public void AffixDepleated(GenericAffixModel aAffix)
     {
         //Delete the affix
         Debug.Log("Affix " + aAffix.GetActionName() + "Depleated - Deleting (Not actually at the moment).");
         
     }
-    
+
     //Used mostly for 1 on 1 actions
     //TODO: Refactor the if statment in these functions and put it into a single function
     //TODO: Change this to use the perform action model for parameters
@@ -264,7 +265,6 @@ public class ActionController
         Debug.Log("Action hit " + hitTracking + " times");
     }
 
-    //These will be redefined and/or changed later to encorperate the other stats from the player/action user
     private void ApplyDamage(GenericCharacter aDamagerReceiver, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used against Target: " + aDamagerReceiver.GetCharacterName());
@@ -355,6 +355,10 @@ public class ActionController
         }
     }
 
-    //Change the apply functions, to take a value and apply that value as the heal, damage, etc...
-    //Make overrideable functions that calculate damage, healing, etc...
+    private void CalculateStats(GenericCharacter aCharacter)
+    {
+
+        aCharacter.GetEquipmentIDList();
+    }
+
 }

@@ -10,6 +10,7 @@ public class Action
     protected int m_ShieldAmount = 0;
     protected int m_HealAmount = 0;
     protected int m_StrengthAmount = 0;
+    protected int m_SpellPowerAmount = 0;
     protected int m_ManaGainAmount = 0;
     protected int m_ActionGainAmount = 0;
     protected int m_ActionCost = 0;
@@ -51,5 +52,15 @@ public class Action
     public bool GetDoesActionHaveAffix()
     {
         return m_bActionHasAffix;
+    }
+
+    public int GetSpellPower()
+    {
+        return m_SpellPowerAmount;
+    }
+
+    public int GetStrength()
+    {
+        return m_StrengthAmount;
     }
 }

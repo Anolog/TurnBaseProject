@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class GenericActionModel : Action
 {
-    public enum ACTION_TYPE
+    public enum ACTION_OFF_OR_DEF
     {
         OFFENSIVE,
+        DEFENSIVE,
+
+        NULL
+    }
+
+    public enum ACTION_TYPE
+    {
+        ABILITY,
+        SPELL,
         DEFENSIVE,
 
         NULL
@@ -26,7 +35,9 @@ public class GenericActionModel : Action
     protected ActionData.AFFIX_LIST_ID m_SpellAffix2 = ActionData.AFFIX_LIST_ID.NONE;
     protected ActionData.AFFIX_LIST_ID m_SpellAffix3 = ActionData.AFFIX_LIST_ID.NONE;
 
-    protected ACTION_TYPE m_ActionType  = ACTION_TYPE.NULL;
+    protected ACTION_OFF_OR_DEF m_ActionOffOrDef  = ACTION_OFF_OR_DEF.NULL;
+
+    protected ACTION_TYPE m_ActionType = ACTION_TYPE.NULL;
 
     protected ACTION_TARGET_AMOUNT m_TargetAmount = ACTION_TARGET_AMOUNT.NO_TARGETS;
 
@@ -35,6 +46,11 @@ public class GenericActionModel : Action
     public ACTION_TYPE GetActionType()
     {
         return m_ActionType;
+    }
+
+    public ACTION_OFF_OR_DEF GetActionOffOrDef()
+    {
+        return m_ActionOffOrDef;
     }
 
     public ACTION_TARGET_AMOUNT GetActionTargetAmount()
