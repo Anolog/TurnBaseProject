@@ -63,7 +63,7 @@ public class GenericAIComponent : MonoBehaviour
         return actionDataModel;
     }
 
-    public void DecideActionToUseAlgorithm()
+    private void DecideActionToUseAlgorithm()
     {
         m_CurrentSelectedActionID = ActionData.ACTION_LIST_ID.NONE;
     }
