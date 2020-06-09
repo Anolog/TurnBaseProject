@@ -19,6 +19,16 @@ public class GenericAIComponent : MonoBehaviour
 		
 	}
 
+    public ActionData.ACTION_LIST_ID GetCurrentSelectedActionID()
+    {
+        return m_CurrentSelectedActionID;
+    }
+
+    public ActionData.ACTION_LIST_ID GetPreviousSelectedActionID()
+    {
+        return m_PreviousSelectedActionID;
+    }
+
     public PerformActionDataModel CreatePerformActionDataModel(ActionData.ACTION_LIST_ID aActionID)
     {
         GenericActionModel actionModel = ActionData.ABILITY_DICTIONARY[aActionID];
@@ -63,11 +73,12 @@ public class GenericAIComponent : MonoBehaviour
         return actionDataModel;
     }
 
-    private void DecideActionToUseAlgorithm()
+    public virtual void DecideActionToUseAlgorithm()
     {
         m_CurrentSelectedActionID = ActionData.ACTION_LIST_ID.NONE;
     }
 
+    //TODO: Can probably clean these up and make a reference var to the component and/or gameobject
     public GenericCharacter GetRandomNonPlayerCharacter()
     {
         GenericCharacter character = null;
@@ -75,14 +86,14 @@ public class GenericAIComponent : MonoBehaviour
 
         while (bCharFound == false)
         {
-            int randIndex = Random.Range(0, GameManager.GetCombatManager.m_AllActionUsers.Count);
+            int randIndex = Random.Range(0, GameManager.GetCombatManager.m_CharacterCombatList.Count);
 
-            if (!GameManager.GetCombatManager.m_AllActionUsers[randIndex].IsPlayerControlled() &&
-                GetComponentInParent<GenericCharacterController>().GetCharacterStats() != GameManager.GetCombatManager.m_AllActionUsers[randIndex])
+            if (!GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats().IsPlayerControlled() &&
+                GetComponentInParent<GenericCharacterController>().GetCharacterStats() != GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats())
             {
                 bCharFound = true;
 
-                character = GameManager.GetCombatManager.m_AllActionUsers[randIndex];
+                character = GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats();
             }
         }
 
@@ -96,14 +107,14 @@ public class GenericAIComponent : MonoBehaviour
 
         while (bCharFound == false)
         {
-            int randIndex = Random.Range(0, GameManager.GetCombatManager.m_AllActionUsers.Count);
+            int randIndex = Random.Range(0, GameManager.GetCombatManager.m_CharacterCombatList.Count);
 
-            if (GameManager.GetCombatManager.m_AllActionUsers[randIndex].IsPlayerControlled() &&
-                GetComponentInParent<GenericCharacterController>().GetCharacterStats() != GameManager.GetCombatManager.m_AllActionUsers[randIndex])
+            if (GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats().IsPlayerControlled() &&
+                GetComponentInParent<GenericCharacterController>().GetCharacterStats() != GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats())
             {
                 bCharFound = true;
 
-                character = GameManager.GetCombatManager.m_AllActionUsers[randIndex];
+                character = GameManager.GetCombatManager.m_CharacterCombatList[randIndex].GetComponent<GenericCharacterController>().GetCharacterStats();
             }
         }
 

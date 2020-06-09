@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour 
 {
+    public List<GameObject> m_CharacterCombatList;
+
+    //TODO: Deprecate all action users list
     //Change this list here to be from the player/character manager class instead
     public List<GenericCharacter> m_AllActionUsers;
     public List<GenericActionModel> m_AllAbilitiesList;
@@ -51,6 +54,11 @@ public class CombatManager : MonoBehaviour
         if (m_AllActionUsers == null)
         {
             m_AllActionUsers = new List<GenericCharacter>();
+        }
+
+        if (m_CharacterCombatList == null)
+        {
+            m_CharacterCombatList = new List<GameObject>();
         }
 
         if (m_AllAbilitiesList == null)
@@ -102,11 +110,33 @@ public class CombatManager : MonoBehaviour
     public void OnPlayerCombatEnd()
     {
         m_CombatState = COMBAT_STATE.ENEMY_TURN;
+
+        OnEnemyCombatBegin();
     }
 
     public void OnEnemyCombatBegin()
     {
         //Combat Interface -> Hide specific UI
+
+        //TODO: Clean this up
+        for (int i = 0; i < m_CharacterCombatList.Count; i++)
+        {
+            if (m_CharacterCombatList[i].GetComponent<GenericCharacterController>().GetCharacterStats().IsPlayerControlled() == false)
+            {
+                Debug.Log("An AI character is selecting a move to use");
+
+                m_CharacterCombatList[i].GetComponent<GenericCharacterController>().m_GenericAIComponent.DecideActionToUseAlgorithm();
+
+                Debug.Log("AI is using the move ID: " + m_CharacterCombatList[i].GetComponent<GenericCharacterController>().m_GenericAIComponent.GetCurrentSelectedActionID());
+
+                //Mother of god...
+                m_ActionController.PerformAction(
+                    m_CharacterCombatList[i].GetComponent<GenericCharacterController>().m_GenericAIComponent.CreatePerformActionDataModel(
+                    m_CharacterCombatList[i].GetComponent<GenericCharacterController>().m_GenericAIComponent.GetCurrentSelectedActionID()));
+
+            }
+        }
+
     }
 
     public void OnEnemyCombatEnd()
@@ -210,6 +240,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    //TODO: Deprecate
     private void UpdateNextCharacter()
     {
         m_TurnQueueIndex++;
@@ -260,6 +291,12 @@ public class CombatManager : MonoBehaviour
 
                             m_ActionController.PerformAction(performActionDataModel);
                         }
+                        else if (ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount() == GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_DEFENSIVE)
+                        {
+                            PerformActionDataModel performActionDataModel = new PerformActionDataModel(m_CurrentSelectedAction, GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_DEFENSIVE,
+                                                                                                       m_CurrentSelectedCharacter);
+                            m_ActionController.PerformAction(performActionDataModel);
+                        }
                         else
                         {
                             //Won't attack everyone on your team, perhaps change this?
@@ -275,7 +312,7 @@ public class CombatManager : MonoBehaviour
                             }
                         }
 
-                        //Do some sort of sort for which character to have selected afterwards?
+
                         m_CurrentSelectedAction = ActionData.ACTION_LIST_ID.NONE;
 
                         //TODO: Clean this up
@@ -286,9 +323,52 @@ public class CombatManager : MonoBehaviour
                     }
                 }
             }
+            //If it's the player turn, and we are selecting an enemy
             else
             {
-                //Figure out what we wanna do here
+                if (m_CurrentSelectedCharacter != null)
+                {
+                    if (m_CurrentSelectedCharacter != aGenericCharacter)
+                    {
+                        //If we don't have something selected
+                        if (m_CurrentSelectedAction == ActionData.ACTION_LIST_ID.NONE)
+                        {
+                            //do nothing I guess...?
+                        }
+                        else
+                        {
+                            if (ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount() == GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET)
+                            {
+                                PerformActionDataModel performActionDataModel = new PerformActionDataModel(m_CurrentSelectedAction, ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount(),
+                                                                                                           m_CurrentSelectedCharacter, aGenericCharacter);
+                                m_ActionController.PerformAction(performActionDataModel);
+                            }
+                            else
+                            {
+                                if (ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount() == GenericActionModel.ACTION_TARGET_AMOUNT.MULTI_TARGET_OFFENSIVE)
+                                {
+                                    PerformActionDataModel performActionDataModel = new PerformActionDataModel(m_CurrentSelectedAction, ActionData.ABILITY_DICTIONARY[m_CurrentSelectedAction].GetActionTargetAmount(),
+                                                                                                               m_CurrentSelectedCharacter);
+
+                                    m_ActionController.PerformAction(performActionDataModel);
+
+                                }
+                                else
+                                {
+                                    Debug.Log("Can't use defensive on enemies.");
+                                }
+                            }
+
+
+                            m_CurrentSelectedAction = ActionData.ACTION_LIST_ID.NONE;
+
+                            //TODO: Clean this up
+                            m_CombatUIController.SetAllUIInactive();
+                            m_CombatUIController.SetEndTurnUIActive();
+                            m_CombatUIController.SetMainSelectionState();
+                        }
+                    }
+                }
             }
         }
     }

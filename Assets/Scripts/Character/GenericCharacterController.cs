@@ -12,6 +12,12 @@ public class GenericCharacterController : MonoBehaviour
 
     SpriteRenderer m_SpriteRenderer;
 
+    //TODO: Fix this later
+    public GenericAIComponent m_GenericAIComponent;
+
+    //Set the generic AI component with JSON by using a string in the JSON to create the object type
+    //Then set it to the generic so it will just use it
+
 	// Use this for initialization
 	void Start ()
     {
@@ -47,7 +53,14 @@ public class GenericCharacterController : MonoBehaviour
     {
         Debug.Log("DEBUG - OBJECT WAS CLICKED: " + this.name);
 
-        GameManager.GetCombatManager.OnCharacterSelected(m_CharacterStats);
-        GameManager.GetCombatManager.m_CombatUIController.UpdateActionButtonVisuals(true);
+        if (m_CharacterStats != null)
+        {
+            GameManager.GetCombatManager.OnCharacterSelected(m_CharacterStats);
+
+            if (m_CharacterStats.IsPlayerControlled())
+            {
+                GameManager.GetCombatManager.m_CombatUIController.UpdateActionButtonVisuals(true);
+            }
+        }
     }
 }

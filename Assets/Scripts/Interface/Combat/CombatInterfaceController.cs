@@ -137,6 +137,7 @@ public class CombatInterfaceController : MonoBehaviour
     public void OnEndTurnButtonPressed()
     {
         Debug.Log("End Turn Button was pressed");
+        GameManager.GetCombatManager.OnPlayerCombatEnd();
     }
 
     public void SetUserButtonSelected(int aButton)

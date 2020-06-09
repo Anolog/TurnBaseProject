@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RandomAIComponent : GenericAIComponent
 {
-    private void DecideActionToUseAlgorithm()
+    public override void DecideActionToUseAlgorithm()
     {
         //Holy shit look at this call.
         m_CurrentSelectedActionID = GetComponentInParent<GenericCharacterController>().GetCharacterStats().GetUsableActionIDList()

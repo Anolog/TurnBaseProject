@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject m_Char1;
     public GameObject m_Char2;
+    public GameObject m_Enemy1;
 
     //static private ActionData m_ActionData;
     //static public ActionData GetActionData { get { return m_ActionData; } }
@@ -52,14 +53,50 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-        Test_CharacterWithUISwapping();
-
+        Test_Enemy_AI();
     }
 
     // Update is called once per frame
     void Update () 
     {
-        //Test_LogCharHealth();
+
+    }
+
+    public void Test_Enemy_AI()
+    {
+        Test_Action_Proper_1 tap_1 = new Test_Action_Proper_1();
+        tap_1.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.STRIKE, tap_1);
+
+        Test_Action_Proper_2 tap_2 = new Test_Action_Proper_2();
+        tap_2.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.HEAL_TARGET, tap_2);
+
+        Test_Action_Proper_3 tap_3 = new Test_Action_Proper_3();
+        tap_3.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.MULTI_STRIKE, tap_3);
+
+        Test_Affix_Proper_1 tafp_1 = new Test_Affix_Proper_1();
+        tafp_1.Init();
+        ActionData.AFFIX_DICTIONARY.Add(ActionData.AFFIX_LIST_ID.DOT_BASIC, tafp_1);
+
+        m_Char1.GetComponent<Test_Character_Proper_1>().Init();
+        m_Char2.GetComponent<Test_Character_Proper_2>().Init();
+        m_Enemy1.GetComponent<Test_Enemy_1>().Init();
+
+        m_CombatManager.SetCurrentSelectedCharacter(GameManager.GetPlayerManager.GetCharacterList()[0]);
+        m_CombatManager.m_CombatUIController = combatInterface.GetComponent<CombatInterfaceController>();
+        m_CombatManager.m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
+
+        //Add them all to combat manager list
+        //m_CombatManager.m_AllActionUsers.Add(GameManager.GetPlayerManager.GetCharacterList()[0]);
+        //m_CombatManager.m_AllActionUsers.Add(GameManager.GetPlayerManager.GetCharacterList()[1]);
+        //m_CombatManager.m_AllActionUsers.Add(m_Enemy1.GetComponent<Test_Enemy_1>().GetCharacterStats());
+
+        m_CombatManager.m_CharacterCombatList.Add(m_Char1);
+        m_CombatManager.m_CharacterCombatList.Add(m_Char2);
+        m_CombatManager.m_CharacterCombatList.Add(m_Enemy1);
+
     }
 
     public void Test_CharacterWithUISwapping()
@@ -200,6 +237,8 @@ public class GameManager : MonoBehaviour
 
         GetPlayerManager.AddCharacterToList(testChar1.m_Character);
         GetPlayerManager.AddCharacterToList(testChar2.m_Character);
+
+
 
         PerformActionDataModel testDataModel = new PerformActionDataModel(ActionData.ACTION_LIST_ID.ATTACK_BASIC, GenericActionModel.ACTION_TARGET_AMOUNT.SINGLE_TARGET, testChar1.m_Character, testChar2.m_Character);
 

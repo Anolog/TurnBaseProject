@@ -8,21 +8,17 @@ public class Test_Enemy_1 : GenericCharacterController
     {
         GenericCharacter genericCharacter = new GenericCharacter();
         genericCharacter.SetIsPlayerControlled(false);
-        genericCharacter.SetCharacterName("Enemy");
-        genericCharacter.SetCharacterMana(50);
-        genericCharacter.SetSpriteFileName("elf_male.png");
+        genericCharacter.SetCharacterName("Enemy_Wolf");
+        genericCharacter.SetCharacterMana(40);
+        genericCharacter.SetCharacterHealth(500);
+        genericCharacter.SetSpriteFileName("wolf.png");
         genericCharacter.SetSpriteFilePath("Test_Assets");
-        genericCharacter.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.HEAL_TARGET);
         genericCharacter.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.MULTI_STRIKE);
         genericCharacter.AddActionIDToUsableActionList(ActionData.ACTION_LIST_ID.STRIKE);
 
         SetCharacterStats(genericCharacter);
 
-        GameManager.GetPlayerManager.AddCharacterToList(genericCharacter);
+        //We do not do this with enemies. Add it in combat manager
+        //GameManager.GetPlayerManager.AddCharacterToList(genericCharacter);
     }
-
-    //List of action order to use
-    //tracker for last action used
-    //reset back to beginning if at the end
-    //Simplest AI in that regards
 }
