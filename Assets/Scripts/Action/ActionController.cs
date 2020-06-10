@@ -355,10 +355,51 @@ public class ActionController
         }
     }
 
-    private void CalculateStats(GenericCharacter aCharacter)
+    private int ComputeAttackValue(GenericCharacter aAttacker, Action aAction)
     {
+        int value = 0;
 
-        aCharacter.GetEquipmentIDList();
+        value = aAction.GetDamageAmount() + aAttacker.GetCharacterTotalStats()[(int)GenericCharacter.STAT_INDEX.STRENGTH];
+
+        return value;
     }
 
+    private int ComputeHealValue(GenericCharacter aAttacker, Action aAction)
+    {
+        int value = 0;
+
+        value = aAction.GetHealAmount() + aAttacker.GetCharacterTotalStats()[(int)GenericCharacter.STAT_INDEX.SPELL_POWER];
+
+        return value;
+    }
+
+    //TODO: Change this to actually work properly. Need to add a current health, and a max health type of variable in generic character
+    private void ProcessDamageTaken(GenericCharacter aGenericCharacter, int aDamageValue)
+    {
+        int currentDamage = aDamageValue;
+
+        aDamageValue -= aGenericCharacter.GetCharacterTotalStats()[(int)GenericCharacter.STAT_INDEX.SHIELD];
+
+        if (aDamageValue < 0)
+        {
+            aDamageValue = 0;
+        }
+
+        int currentHP = aGenericCharacter.GetCharacterTotalStats()[(int)GenericCharacter.STAT_INDEX.HEALTH] -= aDamageValue;
+
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
+
+        aGenericCharacter.SetCharacterHealth(currentHP);
+    }
+
+    private void ProcessHealingTaken(GenericCharacter aGenericCharacter, int aHealingValue)
+    {
+        //TODO: Really need that max health variable here lol
+        //Cap it if it is over the max
+
+        aGenericCharacter.SetCharacterHealth(aGenericCharacter.GetCharacterHealth() + aHealingValue);
+    }
 }

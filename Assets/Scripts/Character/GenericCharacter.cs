@@ -11,7 +11,7 @@ public class GenericCharacter
     protected string m_SpriteFilePath = "";
     protected string m_SpriteFileName = "";
 
-    enum STAT_INDEX
+    public enum STAT_INDEX
     {
         HEALTH,
         MANA,
