@@ -21,10 +21,10 @@ public class GenericCharacter
         SPELL_POWER
     }
 
-    //protected int[] m_CharacterStats = { 100, 0, 0, 0, 0, 0 };
-
     protected int m_CharacterHealth = 100;
+    protected int m_CurrentHealth = 100;
     protected int m_CharacterMana = 0;
+    protected int m_CurrentMana = 0;
     protected int m_ManaGain = 0;
     protected int m_Shield = 0;
     protected int m_Strength = 0;
@@ -116,6 +116,26 @@ public class GenericCharacter
         if (GetCharacterHasMana())
         {
             m_CharacterMana = aMana;
+        }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return m_CurrentHealth;
+    }
+
+    public void SetCurrentHealth(int aHealth)
+    {
+        m_CurrentHealth = aHealth;
+
+        if (m_CurrentHealth < 0)
+        {
+            m_CurrentHealth = 0;
+        }
+
+        if (m_CurrentHealth > GetCharacterTotalStats()[(int)STAT_INDEX.HEALTH])
+        {
+            m_CurrentHealth = GetCharacterTotalStats()[(int)STAT_INDEX.HEALTH];
         }
     }
 
@@ -283,12 +303,15 @@ public class GenericCharacter
 
         foreach (var equip in m_Equipment)
         {
-            equipStatsArray[(int)STAT_INDEX.HEALTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetHealth();
-            equipStatsArray[(int)STAT_INDEX.MANA] += ItemData.ITEM_DICTIONARY[equip.Value].GetMana();
-            equipStatsArray[(int)STAT_INDEX.MANA_REGEN] += ItemData.ITEM_DICTIONARY[equip.Value].GetManaRegen();
-            equipStatsArray[(int)STAT_INDEX.SHIELD] += ItemData.ITEM_DICTIONARY[equip.Value].GetShield();
-            equipStatsArray[(int)STAT_INDEX.SPELL_POWER] += ItemData.ITEM_DICTIONARY[equip.Value].GetSpellPower();
-            equipStatsArray[(int)STAT_INDEX.STRENGTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetStrength();
+            if (equip.Value != ItemData.ITEM_ID.NONE)
+            {
+                equipStatsArray[(int)STAT_INDEX.HEALTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetHealth();
+                equipStatsArray[(int)STAT_INDEX.MANA] += ItemData.ITEM_DICTIONARY[equip.Value].GetMana();
+                equipStatsArray[(int)STAT_INDEX.MANA_REGEN] += ItemData.ITEM_DICTIONARY[equip.Value].GetManaRegen();
+                equipStatsArray[(int)STAT_INDEX.SHIELD] += ItemData.ITEM_DICTIONARY[equip.Value].GetShield();
+                equipStatsArray[(int)STAT_INDEX.SPELL_POWER] += ItemData.ITEM_DICTIONARY[equip.Value].GetSpellPower();
+                equipStatsArray[(int)STAT_INDEX.STRENGTH] += ItemData.ITEM_DICTIONARY[equip.Value].GetStrength();
+            }
         }
 
         return equipStatsArray;
@@ -306,17 +329,28 @@ public class GenericCharacter
             0
         };
 
-        //TODO: Affix cannot restore mana? 
-        foreach (var affix in GameManager.GetCombatManager.m_ActionUsersWithAffixes[this])
+        if (GameManager.GetCombatManager.m_ActionUsersWithAffixes.Count != 0)
         {
-            int stackAmount = affix.GetStackAmount();
+            if (GameManager.GetCombatManager.m_ActionUsersWithAffixes[this] != null)
+            {
+                //TODO: Affix cannot restore mana? 
+                foreach (var affix in GameManager.GetCombatManager.m_ActionUsersWithAffixes[this])
+                {
+                    int stackAmount = affix.GetStackAmount();
 
-            affixStatsArray[(int)STAT_INDEX.HEALTH] += (affix.GetHealAmount() * stackAmount);
-            affixStatsArray[(int)STAT_INDEX.MANA] += 0;
-            affixStatsArray[(int)STAT_INDEX.MANA_REGEN] += 0;
-            affixStatsArray[(int)STAT_INDEX.SHIELD] += (affix.GetShieldAmount() * stackAmount);
-            affixStatsArray[(int)STAT_INDEX.SPELL_POWER] += (affix.GetSpellPower() * stackAmount);
-            affixStatsArray[(int)STAT_INDEX.STRENGTH] += (affix.GetStrength() * stackAmount);
+                    if (affix.GetAffixID() != ActionData.AFFIX_LIST_ID.NONE)
+                    {
+
+                        affixStatsArray[(int)STAT_INDEX.HEALTH] += (affix.GetHealAmount() * stackAmount);
+                        affixStatsArray[(int)STAT_INDEX.MANA] += 0;
+                        affixStatsArray[(int)STAT_INDEX.MANA_REGEN] += 0;
+                        affixStatsArray[(int)STAT_INDEX.SHIELD] += (affix.GetShieldAmount() * stackAmount);
+                        affixStatsArray[(int)STAT_INDEX.SPELL_POWER] += (affix.GetSpellPower() * stackAmount);
+                        affixStatsArray[(int)STAT_INDEX.STRENGTH] += (affix.GetStrength() * stackAmount);
+
+                    }
+                }
+            }
         }
 
         return affixStatsArray;

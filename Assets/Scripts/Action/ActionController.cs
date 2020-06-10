@@ -87,12 +87,12 @@ public class ActionController
 
         if (aAction.GetDoesActionDamage())
         {
-            ApplyDamage(aDefender, aAction);
+            ApplyDamage(aDefender, aAttacker, aAction);
         }
 
         if (aAction.GetDoesActionHeal())
         {
-            ApplyHeal(aDefender, aAction);
+            ApplyHeal(aDefender, aAttacker, aAction);
         }
 
         if (aAction.GetDoesActionHaveAffix())
@@ -122,13 +122,13 @@ public class ActionController
 
             if (aAction.GetDoesActionDamage())
             {
-                ApplyDamage(genericCharacter, aAction);
+                ApplyDamage(genericCharacter, aAttacker, aAction);
                 hitTracking++;
             }
 
             if (aAction.GetDoesActionHeal())
             {
-                ApplyHeal(genericCharacter, aAction);
+                ApplyHeal(genericCharacter, aAttacker, aAction);
                 hitTracking++;
             }
 
@@ -156,12 +156,12 @@ public class ActionController
 
         if (aAction.GetDoesActionDamage())
         {
-            ApplyDamage(aAttacker, aAction);
+            ApplyDamage(aAttacker, aAttacker, aAction);
         }
 
         if (aAction.GetDoesActionHeal())
         {
-            ApplyHeal(aAttacker, aAction);
+            ApplyHeal(aAttacker, aAttacker, aAction);
         }
 
         if (aAction.GetDoesActionHaveAffix() && aAction.GetType() != typeof(GenericAffixModel))
@@ -193,13 +193,13 @@ public class ActionController
             {
                 if (aAction.GetDoesActionDamage())
                 {
-                    ApplyDamage(genericCharacter, aAction);
+                    ApplyDamage(genericCharacter, aAttacker, aAction);
                     hitTracking++;
                 }
 
                 if (aAction.GetDoesActionHeal())
                 {
-                    ApplyHeal(genericCharacter, aAction);
+                    ApplyHeal(genericCharacter, aAttacker, aAction);
                     hitTracking++;
                 }
 
@@ -237,13 +237,13 @@ public class ActionController
             {
                 if (aAction.GetDoesActionDamage())
                 {
-                    ApplyDamage(genericCharacter, aAction);
+                    ApplyDamage(genericCharacter, aDefender, aAction);
                     hitTracking++;
                 }
 
                 if (aAction.GetDoesActionHeal())
                 {
-                    ApplyHeal(genericCharacter, aAction);
+                    ApplyHeal(genericCharacter, aDefender, aAction);
                     hitTracking++;
                 }
 
@@ -265,11 +265,11 @@ public class ActionController
         Debug.Log("Action hit " + hitTracking + " times");
     }
 
-    private void ApplyDamage(GenericCharacter aDamagerReceiver, Action aAction)
+    private void ApplyDamage(GenericCharacter aDamagerReceiver, GenericCharacter aAttacker, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used against Target: " + aDamagerReceiver.GetCharacterName());
 
-        int actionDamageValue = aAction.GetDamageAmount();
+        int actionDamageValue = 0;
 
         Debug.Log("DEBUG - Type: " + aAction.GetType());
 
@@ -282,18 +282,22 @@ public class ActionController
             if (affixAction.GetIsStackable())
             {
                 Debug.Log("Affix is stackable. Multiplying damage by " + affixAction.GetStackAmount() + " .");
-                actionDamageValue *= affixAction.GetStackAmount();
+                actionDamageValue = affixAction.GetDamageAmount() * affixAction.GetStackAmount();
             }
         }
+        else
+        {
+            actionDamageValue = ComputeAttackValue(aAttacker, aAction);
+        }
 
-        aDamagerReceiver.SetCharacterHealth(aDamagerReceiver.GetCharacterHealth() - actionDamageValue);
+        ProcessDamageTaken(aDamagerReceiver, actionDamageValue);
     }
 
-    private void ApplyHeal(GenericCharacter aHealReceiver, Action aAction)
+    private void ApplyHeal(GenericCharacter aHealReceiver, GenericCharacter aAttacker, Action aAction)
     {
         Debug.Log("Action: " + aAction.GetActionName() + " - is being used on Target: " + aHealReceiver.GetCharacterName());
 
-        int actionHealValue = aAction.GetHealAmount();
+        int actionHealValue = 0;
 
         if (aAction.GetType() == typeof(GenericAffixModel))
         {
@@ -303,11 +307,15 @@ public class ActionController
             if (affixAction.GetIsStackable())
             {
                 Debug.Log("Affix is stackable. Multiplying healing by " + affixAction.GetStackAmount() + " .");
-                actionHealValue *= affixAction.GetStackAmount();
+                actionHealValue = affixAction.GetHealAmount() * affixAction.GetStackAmount();
             }
         }
+        else
+        {
+            actionHealValue = ComputeHealValue(aAttacker, aAction);
+        }
 
-        aHealReceiver.SetCharacterHealth(aHealReceiver.GetCharacterHealth() + actionHealValue);
+        ProcessHealingTaken(aHealReceiver, actionHealValue);
     }
 
     private void ApplyAffix(GenericCharacter aAffixReceiver, GenericAffixModel aAffix)
@@ -392,14 +400,11 @@ public class ActionController
             currentHP = 0;
         }
 
-        aGenericCharacter.SetCharacterHealth(currentHP);
+        aGenericCharacter.SetCurrentHealth(currentHP);
     }
 
     private void ProcessHealingTaken(GenericCharacter aGenericCharacter, int aHealingValue)
     {
-        //TODO: Really need that max health variable here lol
-        //Cap it if it is over the max
-
-        aGenericCharacter.SetCharacterHealth(aGenericCharacter.GetCharacterHealth() + aHealingValue);
+        aGenericCharacter.SetCurrentHealth(aGenericCharacter.GetCharacterHealth() + aHealingValue);
     }
 }

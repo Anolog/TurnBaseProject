@@ -84,6 +84,13 @@ public class GameManager : MonoBehaviour
         m_Char2.GetComponent<Test_Character_Proper_2>().Init();
         m_Enemy1.GetComponent<Test_Enemy_1>().Init();
 
+        Test_Equipment1 testItem = new Test_Equipment1();
+        testItem.Init();
+        ItemData.ITEM_DICTIONARY.Add(ItemData.ITEM_ID.TEST_ITEM_WEAPON, testItem);
+        m_PlayerManager.GetCharacterList()[0].AddEquipmentToCharacter(ItemData.ITEM_ID.TEST_ITEM_WEAPON);
+
+
+
         m_CombatManager.SetCurrentSelectedCharacter(GameManager.GetPlayerManager.GetCharacterList()[0]);
         m_CombatManager.m_CombatUIController = combatInterface.GetComponent<CombatInterfaceController>();
         m_CombatManager.m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
