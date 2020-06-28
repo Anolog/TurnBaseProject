@@ -18,6 +18,12 @@ public class EncounterRoomDataModel : GenericRoomDataModel
         m_ListOfEnemiesToSpawn.Add(aEnemyObject);
     }
 
+    //Later will change this with ID's as well
+    public List<GameObject> GetListOfEnemiesToSpawn()
+    {
+        return m_ListOfEnemiesToSpawn;
+    }
+
     //Use json to create/populate later at some point
     public void JSON_CreateEncounterRoomDataModel()
     {

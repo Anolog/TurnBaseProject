@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
+    static public string MAIN_MENU_SCENE_NAME = "MainMenuScene";
+    static public string COMBAT_SCENE_NAME = "CombatScene";
+    static public string MAP_SCENE_NAME = "MapScene";
+    static public string SHOP_SCENE_NAME = "ShopScene";
+    static public string REST_SCENE_NAME = "RestScene";
+
     static private CombatManager m_CombatManager;
     static public CombatManager GetCombatManager { get { return m_CombatManager; } }
 
