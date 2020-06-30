@@ -49,9 +49,9 @@ public class GenericCharacter
     protected Dictionary<ItemData.ITEM_TYPE, ItemData.ITEM_ID> m_Equipment = new Dictionary<ItemData.ITEM_TYPE, ItemData.ITEM_ID>()
     {
         { ItemData.ITEM_TYPE.CHEST,  ItemData.ITEM_ID.NONE  },
-        { ItemData.ITEM_TYPE.HELM,   ItemData.ITEM_ID.NONE   },
-        { ItemData.ITEM_TYPE.WEAPON, ItemData.ITEM_ID.NONE },
-        { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE   }
+        { ItemData.ITEM_TYPE.HELM,   ItemData.ITEM_ID.NONE  },
+        { ItemData.ITEM_TYPE.WEAPON, ItemData.ITEM_ID.NONE  },
+        { ItemData.ITEM_TYPE.RING,   ItemData.ITEM_ID.NONE  }
     };
 
     public void ListUsableActions()

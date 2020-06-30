@@ -60,6 +60,9 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
         Test_Enemy_AI();
+
+        m_Char1.GetComponent<GenericCharacterController>().InitCharacterWithJSON("JSON/Test_JSON/Test_Player_1");
+
     }
 
     // Update is called once per frame

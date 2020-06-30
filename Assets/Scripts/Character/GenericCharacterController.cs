@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public class GenericCharacterController : MonoBehaviour
 {
-    //TODO:
-    //Create JSON Utility function to call FromJSON to create the character
-    //https://docs.unity3d.com/ScriptReference/JsonUtility.FromJson.html
-
     GenericCharacter m_CharacterStats;
 
     SpriteRenderer m_SpriteRenderer;
@@ -33,6 +30,64 @@ public class GenericCharacterController : MonoBehaviour
 		
 	}
 
+    public void InitCharacterWithJSON(string aJSONFilePath)
+    {
+        TextAsset file = Resources.Load(aJSONFilePath) as TextAsset;
+        JSONNode characterJSON = JSON.Parse(file.ToString());
+
+        Debug.Log(characterJSON);
+
+        if (m_CharacterStats == null)
+        {
+            m_CharacterStats = new GenericCharacter();
+        }
+
+        //TODO: Add proper info to be set in the generic char class
+        m_CharacterStats.SetIsPlayerControlled(characterJSON["isPlayerControlled"]);
+        //m_CharacterStats.SetIsCharacterDead(characterJSON["isCharacterDead"]);
+        //m_CharacterStats.SetCharacterHasMana(characterJSON["doesCharacterHaveMana"]);
+        m_CharacterStats.SetCharacterName(characterJSON["characterName"]);
+        m_CharacterStats.SetSpriteFilePath(characterJSON["spriteFilePath"]);
+        m_CharacterStats.SetSpriteFileName(characterJSON["spriteName"]);
+        m_CharacterStats.SetCharacterHealth(characterJSON["characterStats"]["maxHealth"]);
+        m_CharacterStats.SetCurrentHealth(characterJSON["characterStats"]["currentHealth"]);
+        //m_CharacterStats.SetShield(characterJSON["characterStats"]["shield"]);
+        //m_CharacterStats.SetStrength(characterJSON["characterStats"]["strength"]);
+        //m_CharacterStats.SetSpellPower(characterJSON["characterStats"]["spellPower"]);
+
+        if (characterJSON["actionListIDs"].IsArray)
+        {
+            for (int i = 0; i < characterJSON["actionListIDs"].AsArray.Count; i++)
+            {
+                //TODO: Check if ability is in the dictionary first before trying to add to character
+                //NOTE: I might already be doing that in another function that gets called when I add it.
+                //What in the C# wizardy fuck is this
+                ActionData.ACTION_LIST_ID action = (ActionData.ACTION_LIST_ID) System.Enum.Parse(typeof(ActionData.ACTION_LIST_ID), characterJSON["ActionListIDs"][i].ToString());
+
+                m_CharacterStats.AddActionIDToUsableActionList(action);
+            }
+        }
+
+        //Oh god here we go again with the magic
+        m_CharacterStats.AddEquipmentToCharacter(
+            (ItemData.ITEM_ID) System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["chest"].ToString())
+            );
+        m_CharacterStats.AddEquipmentToCharacter(
+            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["helm"].ToString())
+             );
+        m_CharacterStats.AddEquipmentToCharacter(
+            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["weapon"].ToString())
+             );
+        m_CharacterStats.AddEquipmentToCharacter(
+        (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["ring"].ToString())
+            );
+
+        //Unload this somewhere....? at some point in time? Not sure where, but somewhere...
+        m_SpriteRenderer.sprite = Resources.Load<Sprite>(m_CharacterStats.GetSpriteFilePath() + "/" + m_CharacterStats.GetSpriteFileName());
+        
+        Resources.UnloadAsset(file);
+    }
+
     public void SetCharacterStats(GenericCharacter aGenericCharacter)
     {
         m_CharacterStats = aGenericCharacter;
@@ -45,8 +100,7 @@ public class GenericCharacterController : MonoBehaviour
 
     public void OnCharacterSelected()
     {
-        //Return the character stats?
-        //Change the sprite to resemble it was selected if there isn't already a selected target?
+
     }
 
     public void OnMouseDown()
