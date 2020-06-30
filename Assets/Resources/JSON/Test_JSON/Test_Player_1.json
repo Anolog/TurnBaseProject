@@ -5,7 +5,7 @@
 
 	"characterName": "Klaxxin",
 	"spriteFilePath": "Test_Assets",
-	"spriteName": "elf_male.png",
+	"spriteName": "elf_male",
 
 	"characterStats":{
 		"maxHealth": 100,
@@ -18,16 +18,16 @@
 	},
 	
 	"actionListIDs": [ 
-		"ActionData.ACTION_LIST_ID.STRIKE",
-		"ActionData.ACTION_LIST_ID.HEAL_TARGET",
-		"ActionData.ACTION_LIST_ID.MULTI_STRIKE"
+		"STRIKE",
+		"HEAL_TARGET",
+		"MULTI_STRIKE"
 	],
 
 	"equipmentSlots":{
-		"chest": "ItemData.ITEM_ID.NONE",
-		"helm": "ItemData.ITEM_ID.NONE",
-		"weapon": "ItemData.ITEM_ID.NONE",
-		"ring": "ItemData.ITEM_ID.NONE"
+		"chest": "NONE",
+		"helm": "NONE",
+		"weapon": "NONE",
+		"ring": "NONE"
 	}
 
 }

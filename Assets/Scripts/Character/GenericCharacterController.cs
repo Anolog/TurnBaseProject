@@ -60,9 +60,9 @@ public class GenericCharacterController : MonoBehaviour
             for (int i = 0; i < characterJSON["actionListIDs"].AsArray.Count; i++)
             {
                 //TODO: Check if ability is in the dictionary first before trying to add to character
-                //NOTE: I might already be doing that in another function that gets called when I add it.
+                //NOTE: I might already be doing that in another function that gets called when I add it.             
                 //What in the C# wizardy fuck is this
-                ActionData.ACTION_LIST_ID action = (ActionData.ACTION_LIST_ID) System.Enum.Parse(typeof(ActionData.ACTION_LIST_ID), characterJSON["ActionListIDs"][i].ToString());
+                ActionData.ACTION_LIST_ID action = (ActionData.ACTION_LIST_ID) System.Enum.Parse(typeof(ActionData.ACTION_LIST_ID), characterJSON["actionListIDs"][i]);
 
                 m_CharacterStats.AddActionIDToUsableActionList(action);
             }
@@ -70,22 +70,26 @@ public class GenericCharacterController : MonoBehaviour
 
         //Oh god here we go again with the magic
         m_CharacterStats.AddEquipmentToCharacter(
-            (ItemData.ITEM_ID) System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["chest"].ToString())
+            (ItemData.ITEM_ID) System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["chest"])
             );
         m_CharacterStats.AddEquipmentToCharacter(
-            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["helm"].ToString())
+            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["helm"])
              );
         m_CharacterStats.AddEquipmentToCharacter(
-            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["weapon"].ToString())
+            (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["weapon"])
              );
         m_CharacterStats.AddEquipmentToCharacter(
-        (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["ring"].ToString())
+        (ItemData.ITEM_ID)System.Enum.Parse(typeof(ItemData.ITEM_ID), characterJSON["equipmentSlots"]["ring"])
             );
 
         //Unload this somewhere....? at some point in time? Not sure where, but somewhere...
-        m_SpriteRenderer.sprite = Resources.Load<Sprite>(m_CharacterStats.GetSpriteFilePath() + "/" + m_CharacterStats.GetSpriteFileName());
+
+        string spritePath = m_CharacterStats.GetSpriteFilePath() + "/" + m_CharacterStats.GetSpriteFileName();
+        m_SpriteRenderer.sprite = Resources.Load<Sprite>(spritePath);
         
         Resources.UnloadAsset(file);
+
+        GameManager.GetPlayerManager.AddCharacterToList(m_CharacterStats);
     }
 
     public void SetCharacterStats(GenericCharacter aGenericCharacter)

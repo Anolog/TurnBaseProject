@@ -59,15 +59,40 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-        Test_Enemy_AI();
-
-        m_Char1.GetComponent<GenericCharacterController>().InitCharacterWithJSON("JSON/Test_JSON/Test_Player_1");
-
+        Test_JSON_Load();
     }
 
     // Update is called once per frame
     void Update () 
     {
+
+    }
+
+    public void Test_JSON_Load()
+    {
+        Test_Action_Proper_1 tap_1 = new Test_Action_Proper_1();
+        tap_1.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.STRIKE, tap_1);
+
+        Test_Action_Proper_2 tap_2 = new Test_Action_Proper_2();
+        tap_2.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.HEAL_TARGET, tap_2);
+
+        Test_Action_Proper_3 tap_3 = new Test_Action_Proper_3();
+        tap_3.Init();
+        ActionData.ABILITY_DICTIONARY.Add(ActionData.ACTION_LIST_ID.MULTI_STRIKE, tap_3);
+
+        Test_Affix_Proper_1 tafp_1 = new Test_Affix_Proper_1();
+        tafp_1.Init();
+        ActionData.AFFIX_DICTIONARY.Add(ActionData.AFFIX_LIST_ID.DOT_BASIC, tafp_1);
+
+        m_Char1.GetComponent<GenericCharacterController>().InitCharacterWithJSON("JSON/Test_JSON/Test_Player_1");
+
+        m_CombatManager.SetCurrentSelectedCharacter(GameManager.GetPlayerManager.GetCharacterList()[0]);
+        m_CombatManager.m_CombatUIController = combatInterface.GetComponent<CombatInterfaceController>();
+        m_CombatManager.m_CombatUIController.GetInterfaceModel().UpdateListOfActions();
+
+        m_CombatManager.m_CharacterCombatList.Add(m_Char1);
 
     }
 

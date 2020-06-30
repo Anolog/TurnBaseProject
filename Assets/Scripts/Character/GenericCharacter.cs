@@ -265,15 +265,18 @@ public class GenericCharacter
     //TODO: If, is player, take the previous equip item, and put it in inventory
     public void AddEquipmentToCharacter(ItemData.ITEM_ID aItemID)
     {
-        ItemData.ITEM_TYPE itemType = ItemData.ITEM_DICTIONARY[aItemID].GetItemType();
+        if (aItemID != ItemData.ITEM_ID.NONE)
+        {
+            ItemData.ITEM_TYPE itemType = ItemData.ITEM_DICTIONARY[aItemID].GetItemType();
 
-        if (IsEquipSlotFull(itemType) == false)
-        {
-            m_Equipment[itemType] = aItemID;
-        }
-        else
-        {
-            Debug.Log("Warning: aItemID: " + aItemID + " cannot be added, the slot is already filled");
+            if (IsEquipSlotFull(itemType) == false)
+            {
+                m_Equipment[itemType] = aItemID;
+            }
+            else
+            {
+                Debug.Log("Warning: aItemID: " + aItemID + " cannot be added, the slot is already filled");
+            }
         }
     }
 
