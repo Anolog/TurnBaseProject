@@ -30,7 +30,6 @@ public class GenericCharacter
     protected int m_Strength = 0;
     protected int m_SpellPower = 0;
 
-    protected bool m_IsCharacterDead = false;
     protected bool m_CharacterHasMana = false;
 
     protected int m_CharacterTurnDamage = 0;
@@ -86,6 +85,27 @@ public class GenericCharacter
         m_SpriteFileName = aFileName;
     }
 
+    public void SetIsCharacterDead(bool aDead)
+    {
+        m_bIsCharacterDead = aDead;
+    }
+
+    public bool GetIsCharacterDead()
+    {
+        return m_bIsCharacterDead;
+    }
+
+    public void SetShield(int aShield)
+    {
+        m_Shield = aShield;
+    }
+
+    public int GetShield()
+    {
+        return m_Shield;
+    }
+
+
     public string GetCharacterName()
     {
         return m_CharacterName;
@@ -139,9 +159,34 @@ public class GenericCharacter
         }
     }
 
+    public void SetCharacterHasMana(bool aHasMana)
+    {
+        m_CharacterHasMana = aHasMana;
+    }
+
     public bool GetCharacterHasMana()
     {
         return m_CharacterHasMana;
+    }
+
+    public void SetStrength(int aStrength)
+    {
+        m_Strength = aStrength;
+    }
+
+    public int GetStrength()
+    {
+        return m_Strength;
+    }
+
+    public void SetSpellPower(int aSpellPower)
+    {
+        m_SpellPower = aSpellPower;
+    }
+
+    public int GetSpellPower()
+    {
+        return m_SpellPower;
     }
 
     public bool IsPlayerControlled()

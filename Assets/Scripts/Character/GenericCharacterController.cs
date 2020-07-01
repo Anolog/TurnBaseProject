@@ -44,16 +44,16 @@ public class GenericCharacterController : MonoBehaviour
 
         //TODO: Add proper info to be set in the generic char class
         m_CharacterStats.SetIsPlayerControlled(characterJSON["isPlayerControlled"]);
-        //m_CharacterStats.SetIsCharacterDead(characterJSON["isCharacterDead"]);
-        //m_CharacterStats.SetCharacterHasMana(characterJSON["doesCharacterHaveMana"]);
+        m_CharacterStats.SetIsCharacterDead(characterJSON["isCharacterDead"]);
+        m_CharacterStats.SetCharacterHasMana(characterJSON["doesCharacterHaveMana"]);
         m_CharacterStats.SetCharacterName(characterJSON["characterName"]);
         m_CharacterStats.SetSpriteFilePath(characterJSON["spriteFilePath"]);
         m_CharacterStats.SetSpriteFileName(characterJSON["spriteName"]);
         m_CharacterStats.SetCharacterHealth(characterJSON["characterStats"]["maxHealth"]);
         m_CharacterStats.SetCurrentHealth(characterJSON["characterStats"]["currentHealth"]);
-        //m_CharacterStats.SetShield(characterJSON["characterStats"]["shield"]);
-        //m_CharacterStats.SetStrength(characterJSON["characterStats"]["strength"]);
-        //m_CharacterStats.SetSpellPower(characterJSON["characterStats"]["spellPower"]);
+        m_CharacterStats.SetShield(characterJSON["characterStats"]["shield"]);
+        m_CharacterStats.SetStrength(characterJSON["characterStats"]["strength"]);
+        m_CharacterStats.SetSpellPower(characterJSON["characterStats"]["spellPower"]);
 
         if (characterJSON["actionListIDs"].IsArray)
         {
