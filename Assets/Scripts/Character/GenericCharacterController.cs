@@ -42,7 +42,6 @@ public class GenericCharacterController : MonoBehaviour
             m_CharacterStats = new GenericCharacter();
         }
 
-        //TODO: Add proper info to be set in the generic char class
         m_CharacterStats.SetIsPlayerControlled(characterJSON["isPlayerControlled"]);
         m_CharacterStats.SetIsCharacterDead(characterJSON["isCharacterDead"]);
         m_CharacterStats.SetCharacterHasMana(characterJSON["doesCharacterHaveMana"]);

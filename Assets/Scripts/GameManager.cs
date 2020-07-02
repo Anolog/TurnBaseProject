@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //TODO: Move to utility class
     static public string MAIN_MENU_SCENE_NAME = "MainMenuScene";
     static public string COMBAT_SCENE_NAME = "CombatScene";
     static public string MAP_SCENE_NAME = "MapScene";

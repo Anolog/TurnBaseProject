@@ -1,0 +1,47 @@
+{
+	"mapTitle":"Test Map 1",
+
+	"roomNodes":[
+		{
+			"roomType": "ENCOUNTER",
+			"roomBackgroundFilePath": "",
+			"roomBackgroundFileName": "",
+
+			"enemiesToSpawn": [
+				{
+					"isPlayerControlled": true,
+					"isCharacterDead": false,
+					"doesCharacterHaveMana": true,
+
+					"characterName": "Klaxxin",
+					"spriteFilePath": "Test_Assets",
+					"spriteName": "elf_male",
+
+					"characterStats":{
+						"maxHealth": 100,
+						"currentHealth": 100,
+						"maxMana": 50,
+						"currentMana": 50,
+						"shield": 0,
+						"strength": 0,
+						"spellPower": 0
+					},
+	
+					"actionListIDs": [ 
+						"STRIKE",
+						"HEAL_TARGET",
+						"MULTI_STRIKE"
+					],
+
+					"equipmentSlots":{
+						"chest": "NONE",
+						"helm": "NONE",
+						"weapon": "NONE",
+						"ring": "NONE"
+					}
+				}
+			]
+		}
+	]
+	
+}
