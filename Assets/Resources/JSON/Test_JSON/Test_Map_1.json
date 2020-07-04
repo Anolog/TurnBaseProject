@@ -1,11 +1,14 @@
 {
-	"mapTitle":"Test Map 1",
+	"mapTitle": "Test Map 1",
+	"mapGenerationType": "COMPLETELY_DETERMINED",
 
 	"roomNodes":[
 		{
 			"roomType": "ENCOUNTER",
 			"roomBackgroundFilePath": "",
 			"roomBackgroundFileName": "",
+			"leftConnectingNode": "",
+			"rightConnectingNode": "",
 
 			"enemiesToSpawn": [
 				{

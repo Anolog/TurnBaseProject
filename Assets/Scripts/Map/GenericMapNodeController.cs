@@ -7,9 +7,12 @@ public class GenericMapNodeController : MonoBehaviour
 {
     protected SpriteRenderer m_SpriteRenderer;
 
-    protected JSONNode jsonDataModel;
+    protected JSONNode m_RoomJSONDataModel;
 
     protected bool m_HasVisited = false;
+
+    protected GameObject m_LeftNode;
+    protected GameObject m_RightNode;
 
 	// Use this for initialization
 	void Start () 
@@ -31,9 +34,14 @@ public class GenericMapNodeController : MonoBehaviour
 		
 	}
 
-    public void PopulateNodeWithJSON(string aJSON)
+    private void PopulateNodeWithJSON()
     {
 
+    }
+
+    public void SetRoomJSONDataModel(JSONNode aData)
+    {
+        m_RoomJSONDataModel = aData;
     }
 
     public bool GetHasVisited()
@@ -46,11 +54,31 @@ public class GenericMapNodeController : MonoBehaviour
         m_HasVisited = aHasVisited;
     }
 
+    public GameObject GetLeftNode()
+    {
+        return m_LeftNode;
+    }
+
+    public void SetLeftNode(GameObject aNode)
+    {
+        m_LeftNode = aNode;
+    }
+
+    public GameObject GetRightNode()
+    {
+        return m_RightNode;
+    }
+
+    public void SetRightNode(GameObject aNode)
+    {
+        m_RightNode = aNode;
+    }
+
     private void OnMouseUpAsButton()
     {
         //Load the scene with the proper info from this.
         
-        if (jsonDataModel.IsNull)
+        if (m_RoomJSONDataModel.IsNull)
         {
             //Use procedural generation
         }
