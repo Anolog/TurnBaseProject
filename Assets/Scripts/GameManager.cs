@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using SimpleJSON;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,11 +13,16 @@ public class GameManager : MonoBehaviour
     static public string SHOP_SCENE_NAME = "ShopScene";
     static public string REST_SCENE_NAME = "RestScene";
 
+    static private GameManager m_GameManager;
+    static public GameManager GetGameManager { get { return m_GameManager; } }
+
     static private CombatManager m_CombatManager;
     static public CombatManager GetCombatManager { get { return m_CombatManager; } }
 
     static private PlayerManager m_PlayerManager;
     static public PlayerManager GetPlayerManager { get { return m_PlayerManager; } }
+
+    private MapManager m_MapManager;
 
     public TestCombatInterface cbIntTest;
     public GameObject combatInterface;
@@ -36,6 +43,11 @@ public class GameManager : MonoBehaviour
 
     void Awake () 
     {
+        if (m_GameManager == null)
+        {
+            m_GameManager = this;
+        }
+
         DontDestroyOnLoad(this);
 
         m_CombatManager = GetComponent<CombatManager>();
@@ -67,6 +79,25 @@ public class GameManager : MonoBehaviour
     void Update () 
     {
 
+    }
+
+    public void OnCompletelyDeterminedButtonPressed(Scene aScene, LoadSceneMode aSceneLoadMode)
+    {
+        Debug.Log("Scene Loaded - Unsubscribing from event.");
+        SceneManager.sceneLoaded -= OnCompletelyDeterminedButtonPressed;
+
+        GameObject mapManager = GameObject.Find("MainMenuController");
+
+        if (mapManager == null)
+        {
+            Debug.Log("Error: mapManager variable, trying to find/be MainMenuController is null!");
+        }
+        else
+        {
+            //TODO: Make this a static string
+            string mapFilePath = "JSON/Test_JSON/Test_Map_1";
+            mapManager.GetComponent<MapManager>().LoadJSONFromFilePathAndInitMapManager(mapFilePath);
+        }
     }
 
     public void Test_JSON_Load()

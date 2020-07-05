@@ -68,6 +68,15 @@ public class MapManager : MonoBehaviour
         m_JSONMapData = JSON.Parse(file.ToString());
     }
 
+    public void LoadJSONFromFilePathAndInitMapManager(string aFilePath)
+    {
+        LoadJSONFromFilePath(aFilePath);
+
+        m_MapGenerationType = (MAP_GENERATION_TYPE)System.Enum.Parse(typeof(MAP_GENERATION_TYPE), m_JSONMapData["mapGenerationType"]);
+
+        CreateRoomNodesWithJSON();
+    }
+
     public void CreateRoomNodesWithJSON()
     {
         if (!m_JSONMapData.IsNull)
