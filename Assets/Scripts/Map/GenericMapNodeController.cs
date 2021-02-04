@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
+using UnityEngine.SceneManagement;
 
 public class GenericMapNodeController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GenericMapNodeController : MonoBehaviour
 
     protected GameObject m_LeftNode;
     protected GameObject m_RightNode;
+
+    protected int m_NodeID;
 
 	// Use this for initialization
 	void Start () 
@@ -74,9 +77,20 @@ public class GenericMapNodeController : MonoBehaviour
         m_RightNode = aNode;
     }
 
+    public int GetNodeID() 
+    {
+        return m_NodeID;
+    }
+
+    public void SetNodeID(int aNode) 
+    {
+        m_NodeID = aNode;
+    }
+
     private void OnMouseUpAsButton()
     {
         //Load the scene with the proper info from this.
+        Debug.Log("Mapnode was clicked.");
         
         if (m_RoomJSONDataModel.IsNull)
         {
@@ -84,7 +98,15 @@ public class GenericMapNodeController : MonoBehaviour
         }
         else
         {
+            //Do other checks for if visited before
+            if (m_HasVisited == false)
+            {
 
+                Debug.Log("Subscribing to mapnodeclicked in gamemanager to load the combat scene.");
+                SceneManager.sceneLoaded += GameManager.GetGameManager.OnMapNodeSelected;
+                SceneManager.LoadScene("CombatScene", LoadSceneMode.Additive);
+
+            }
         }
 
     }

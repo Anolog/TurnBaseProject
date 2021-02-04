@@ -4,11 +4,12 @@
 
 	"roomNodes":[
 		{
+			"nodeID": 0,
 			"roomType": "ENCOUNTER",
 			"roomBackgroundFilePath": "",
 			"roomBackgroundFileName": "",
-			"leftConnectingNode": "",
-			"rightConnectingNode": "",
+			"leftConnectingNode": 0,
+			"rightConnectingNode": -1,
 
 			"enemiesToSpawn": [
 				{
@@ -22,6 +23,81 @@
 
 					"characterStats":{
 						"maxHealth": 100,
+						"currentHealth": 100,
+						"maxMana": 50,
+						"currentMana": 50,
+						"shield": 0,
+						"strength": 0,
+						"spellPower": 0
+					},
+	
+					"actionListIDs": [ 
+						"STRIKE",
+						"HEAL_TARGET",
+						"MULTI_STRIKE"
+					],
+
+					"equipmentSlots":{
+						"chest": "NONE",
+						"helm": "NONE",
+						"weapon": "NONE",
+						"ring": "NONE"
+					}
+				}
+			]
+		},
+		{
+			"nodeID": 1,
+			"roomType": "ENCOUNTER",
+			"roomBackgroundFilePath": "",
+			"roomBackgroundFileName": "",
+			"leftConnectingNode": -1,
+			"rightConnectingNode": -1,
+
+			"enemiesToSpawn": [
+				{
+					"isPlayerControlled": true,
+					"isCharacterDead": false,
+					"doesCharacterHaveMana": true,
+
+					"characterName": "Klaxxin2",
+					"spriteFilePath": "Test_Assets",
+					"spriteName": "elf_male",
+
+					"characterStats":{
+						"maxHealth": 120,
+						"currentHealth": 100,
+						"maxMana": 50,
+						"currentMana": 50,
+						"shield": 0,
+						"strength": 0,
+						"spellPower": 0
+					},
+	
+					"actionListIDs": [ 
+						"STRIKE",
+						"HEAL_TARGET",
+						"MULTI_STRIKE"
+					],
+
+					"equipmentSlots":{
+						"chest": "NONE",
+						"helm": "NONE",
+						"weapon": "NONE",
+						"ring": "NONE"
+					}
+				},
+				{
+					"isPlayerControlled": true,
+					"isCharacterDead": false,
+					"doesCharacterHaveMana": true,
+
+					"characterName": "Klaxxin3",
+					"spriteFilePath": "Test_Assets",
+					"spriteName": "elf_male",
+
+					"characterStats":{
+						"maxHealth": 200,
 						"currentHealth": 100,
 						"maxMana": 50,
 						"currentMana": 50,

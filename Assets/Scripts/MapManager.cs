@@ -5,6 +5,15 @@ using SimpleJSON;
 
 public class MapManager : MonoBehaviour
 {
+    private enum NODE_PLACEMENT_DIRECTION 
+    {
+        LEFT,
+        RIGHT,
+        MIDDLE,
+
+        NONE
+    };
+
     private enum MAP_GENERATION_TYPE
     {
         COMPLETELY_DETERMINED,
@@ -75,6 +84,7 @@ public class MapManager : MonoBehaviour
         m_MapGenerationType = (MAP_GENERATION_TYPE)System.Enum.Parse(typeof(MAP_GENERATION_TYPE), m_JSONMapData["mapGenerationType"]);
 
         CreateRoomNodesWithJSON();
+        LinkNodes();
     }
 
     public void CreateRoomNodesWithJSON()
@@ -87,6 +97,7 @@ public class MapManager : MonoBehaviour
                 GameObject mapNode;
                 //TODO: Replace path with static path
                 mapNode = Instantiate(Resources.Load("Prefabs/MapNode_Prefab")) as GameObject;
+                mapNode.transform.SetParent(this.transform);
                 mapNode.GetComponent<GenericMapNodeController>().SetHasVisited(false);
                 mapNode.GetComponent<GenericMapNodeController>().SetRoomJSONDataModel(m_JSONMapData["roomNodes"][i]);
 
@@ -111,6 +122,52 @@ public class MapManager : MonoBehaviour
 
     //TODO: do this later when random generation is there
     public void CreateRandomNode()
+    {
+
+    }
+
+    public void LinkNodes() 
+    {
+        //TODO: Change this to the initial point where we want the map to end/start?
+        m_RoomNodeList[0].gameObject.transform.position = new Vector3(0, 0, 0);
+        for (int i = 0; i < m_RoomNodeList.Count; i++) 
+        {
+            GenericMapNodeController node = m_RoomNodeList[i].GetComponent<GenericMapNodeController>();
+            NODE_PLACEMENT_DIRECTION drawDirection = NODE_PLACEMENT_DIRECTION.NONE;
+            if (node.GetLeftNode() != null && node.GetRightNode() != null) 
+            {
+                drawDirection = NODE_PLACEMENT_DIRECTION.MIDDLE;
+                //TODO: I WAS LAST HERE FEB 3rd
+                MoveLinkedNodePosition(m_RoomNodeList[i], node.GetLeftNode().GetComponent<GenericMapNodeController>().GetNodeID());
+            }
+            else if (node.GetLeftNode() != null && node.GetRightNode() == null) 
+            {
+                drawDirection = NODE_PLACEMENT_DIRECTION.LEFT;
+            }
+            else if (node.GetLeftNode() == null && node.GetRightNode() != null) 
+            {
+                drawDirection = NODE_PLACEMENT_DIRECTION.RIGHT;
+            }
+
+            if(drawDirection != NODE_PLACEMENT_DIRECTION.NONE)
+            {
+
+            }
+        }
+    }
+
+    public GameObject GetNodeWithID(int aNodeID)
+    {
+        GameObject node = null;
+        for (int i = 0; i < m_RoomNodeList.Count; i++) 
+        {
+            node = (m_RoomNodeList[i].GetComponent<GenericMapNodeController>().GetNodeID() == aNodeID) ? m_RoomNodeList[i] : null;
+        }
+
+        return node;
+    }
+
+    public void MoveLinkedNodePosition(GameObject aStationaryNode, int movingNodeID) 
     {
 
     }

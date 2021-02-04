@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-        Test_JSON_Load();
+        //Test_JSON_Load();
     }
 
     // Update is called once per frame
@@ -81,12 +81,15 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    //TODO: Move the onbuttonpressed functions to a manager for scene changing callbacks.
+
     public void OnCompletelyDeterminedButtonPressed(Scene aScene, LoadSceneMode aSceneLoadMode)
     {
         Debug.Log("Scene Loaded - Unsubscribing from event.");
         SceneManager.sceneLoaded -= OnCompletelyDeterminedButtonPressed;
 
-        GameObject mapManager = GameObject.Find("MainMenuController");
+        GameObject mapManager = GameObject.Find("MapManager");
 
         if (mapManager == null)
         {
@@ -98,6 +101,36 @@ public class GameManager : MonoBehaviour
             string mapFilePath = "JSON/Test_JSON/Test_Map_1";
             mapManager.GetComponent<MapManager>().LoadJSONFromFilePathAndInitMapManager(mapFilePath);
         }
+    }
+
+    public void OnMapNodeSelected(Scene aScene, LoadSceneMode aSceneLoadMode)
+    {
+        Debug.Log("Scene Loaded - Unsubscribing from event");
+        SceneManager.sceneLoaded -= OnMapNodeSelected;
+
+        GameObject.Find("MapCamera").SetActive(false);
+
+
+        //TODO: Move this functionality into it's own function somewhere within another class.
+        //Call it something like " PrepareCombatScene() "
+
+        GameManager.GetCombatManager.m_CharacterCombatList.Clear();
+
+        
+
+        /* TODO: Need a player JSON for the characters that are playable to be made.
+         * Then just use the genericcharacter that is stored in the list to be set as the value on the game object
+         
+        for (int i = 0; i < GameManager.GetPlayerManager.GetCharacterList().Count; i++)
+        {
+            GameObject player = Instantiate(Resources.Load("Prefabs/GenericPlayer_Prefab")) as GameObject;
+
+            GameManager.GetCombatManager.m_CharacterCombatList.Add(player);
+
+        }
+
+        */
+
     }
 
     public void Test_JSON_Load()
