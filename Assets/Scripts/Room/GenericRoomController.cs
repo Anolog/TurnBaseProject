@@ -104,9 +104,6 @@ public class GenericRoomController : MonoBehaviour
             }
         }
 
-
-        //TODO: I Was here
-
         //Spawn players
         //GameManager.GetPlayerManager.GetCharacterList();
 

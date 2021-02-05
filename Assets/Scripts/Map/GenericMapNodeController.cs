@@ -12,8 +12,8 @@ public class GenericMapNodeController : MonoBehaviour
 
     protected bool m_HasVisited = false;
 
-    protected GameObject m_LeftNode;
-    protected GameObject m_RightNode;
+    protected int m_LeftNodeID;
+    protected int m_RightNodeID;
 
     protected int m_NodeID;
 
@@ -57,24 +57,24 @@ public class GenericMapNodeController : MonoBehaviour
         m_HasVisited = aHasVisited;
     }
 
-    public GameObject GetLeftNode()
+    public int GetLeftNodeID()
     {
-        return m_LeftNode;
+        return m_LeftNodeID;
     }
 
-    public void SetLeftNode(GameObject aNode)
+    public void SetLeftNodeID(int aNodeID)
     {
-        m_LeftNode = aNode;
+        m_LeftNodeID = aNodeID;
     }
 
-    public GameObject GetRightNode()
+    public int GetRightNodeID()
     {
-        return m_RightNode;
+        return m_RightNodeID;
     }
 
-    public void SetRightNode(GameObject aNode)
+    public void SetRightNode(int aNodeID)
     {
-        m_RightNode = aNode;
+        m_RightNodeID = aNodeID;
     }
 
     public int GetNodeID() 

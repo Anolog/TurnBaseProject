@@ -8,7 +8,7 @@
 			"roomType": "ENCOUNTER",
 			"roomBackgroundFilePath": "",
 			"roomBackgroundFileName": "",
-			"leftConnectingNode": 0,
+			"leftConnectingNode": 1,
 			"rightConnectingNode": -1,
 
 			"enemiesToSpawn": [

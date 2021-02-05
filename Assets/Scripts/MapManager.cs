@@ -5,7 +5,7 @@ using SimpleJSON;
 
 public class MapManager : MonoBehaviour
 {
-    private enum NODE_PLACEMENT_DIRECTION 
+    public enum NODE_PLACEMENT_DIRECTION 
     {
         LEFT,
         RIGHT,
@@ -100,7 +100,7 @@ public class MapManager : MonoBehaviour
                 mapNode.transform.SetParent(this.transform);
                 mapNode.GetComponent<GenericMapNodeController>().SetHasVisited(false);
                 mapNode.GetComponent<GenericMapNodeController>().SetRoomJSONDataModel(m_JSONMapData["roomNodes"][i]);
-
+                //TODO: I WAS LAST HERE - Make it parse the node json info into the node itself.
                 m_RoomNodeList.Add(mapNode);
             }
         }
@@ -129,30 +129,33 @@ public class MapManager : MonoBehaviour
     public void LinkNodes() 
     {
         //TODO: Change this to the initial point where we want the map to end/start?
-        m_RoomNodeList[0].gameObject.transform.position = new Vector3(0, 0, 0);
+        m_RoomNodeList[0].gameObject.transform.position = new Vector3(0, 0, m_RoomNodeList[0].gameObject.transform.position.z);
         for (int i = 0; i < m_RoomNodeList.Count; i++) 
         {
             GenericMapNodeController node = m_RoomNodeList[i].GetComponent<GenericMapNodeController>();
             NODE_PLACEMENT_DIRECTION drawDirection = NODE_PLACEMENT_DIRECTION.NONE;
-            if (node.GetLeftNode() != null && node.GetRightNode() != null) 
+            if ((node.GetRightNodeID() != -1 && node.GetLeftNodeID() == -1) ||
+                (node.GetRightNodeID() == -1 && node.GetLeftNodeID() != -1)) 
             {
                 drawDirection = NODE_PLACEMENT_DIRECTION.MIDDLE;
-                //TODO: I WAS LAST HERE FEB 3rd
-                MoveLinkedNodePosition(m_RoomNodeList[i], node.GetLeftNode().GetComponent<GenericMapNodeController>().GetNodeID());
+                int nodeID = node.GetRightNodeID() == -1 ? node.GetLeftNodeID() : node.GetRightNodeID();
+                MoveLinkedNodePosition(m_RoomNodeList[i], GetNodeWithID(nodeID), drawDirection);
             }
-            else if (node.GetLeftNode() != null && node.GetRightNode() == null) 
-            {
-                drawDirection = NODE_PLACEMENT_DIRECTION.LEFT;
-            }
-            else if (node.GetLeftNode() == null && node.GetRightNode() != null) 
+            else if (node.GetRightNodeID() != -1 && node.GetLeftNodeID() == -1) 
             {
                 drawDirection = NODE_PLACEMENT_DIRECTION.RIGHT;
-            }
-
-            if(drawDirection != NODE_PLACEMENT_DIRECTION.NONE)
+                MoveLinkedNodePosition(m_RoomNodeList[i], GetNodeWithID(node.GetRightNodeID()), drawDirection);
+            } else if (node.GetRightNodeID() == -1 && node.GetLeftNodeID() != -1) 
             {
-
+                drawDirection = NODE_PLACEMENT_DIRECTION.LEFT;
+                MoveLinkedNodePosition(m_RoomNodeList[i], GetNodeWithID(node.GetLeftNodeID()), drawDirection);
+            } else if (node.GetRightNodeID() != -1 && node.GetLeftNodeID() != -1) 
+            {
+                MoveLinkedNodePosition(m_RoomNodeList[i], GetNodeWithID(node.GetRightNodeID()), NODE_PLACEMENT_DIRECTION.RIGHT);
+                MoveLinkedNodePosition(m_RoomNodeList[i], GetNodeWithID(node.GetLeftNodeID()), NODE_PLACEMENT_DIRECTION.LEFT);
             }
+
+
         }
     }
 
@@ -167,9 +170,36 @@ public class MapManager : MonoBehaviour
         return node;
     }
 
-    public void MoveLinkedNodePosition(GameObject aStationaryNode, int movingNodeID) 
+    public void MoveLinkedNodePosition(GameObject aStationaryNode, GameObject linkedNode, NODE_PLACEMENT_DIRECTION direction) 
     {
+        float distance = 20.0f;
+        float xMovement;
 
+        if(direction != NODE_PLACEMENT_DIRECTION.NONE) 
+        {
+            if(direction == NODE_PLACEMENT_DIRECTION.MIDDLE) 
+            {
+                xMovement = 0.0f;
+            } 
+            else 
+            {
+                xMovement = direction == NODE_PLACEMENT_DIRECTION.RIGHT ? distance/2 : -distance/2;
+            }
+
+            Vector3 movementVector = new Vector3(xMovement, distance, 0);
+
+            linkedNode.transform.position = aStationaryNode.transform.position + movementVector;
+
+            LineRenderer line = GetComponent<LineRenderer>() == null ? gameObject.AddComponent<LineRenderer>() : GetComponent<LineRenderer>();
+
+            line.SetPosition(0, aStationaryNode.transform.position);
+            line.SetPosition(1, linkedNode.transform.position);
+            line.startColor = Color.blue;
+            line.endColor = Color.red;
+            line.startWidth = 2.0f;
+            line.endWidth = 2.0f;
+            line.enabled = true;
+        }
     }
 
     public void GenerateMapWithRandomNodes()
